@@ -1,18 +1,17 @@
 package com.lucasffrezende.sorteadorweb.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "tb_endereco")
-public class Endereco extends GenericDomain {
+@Embeddable
+public class Endereco {
 
     private String rua;
     private String bairro;
     private Integer numero;
+    private String cidade;
 
 }

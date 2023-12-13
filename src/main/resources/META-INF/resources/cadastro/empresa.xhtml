@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+
+    <h:head>
+        <title>SorteadorEducadora - Nova Empresa</title>
+
+        <!-- FavIcon e Import CSS -->
+        <link rel="shortcut icon" type="image/x-icon"
+              href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
+        <h:outputStylesheet name="/rsc/css/estilo.css"/>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <!--Incluir menu-->
+            <ui:include src="/rsc/templates/menu.xhtml"/>
+
+            <p:panel>
+                <h2>Nova Empresa</h2>
+                <p:messages id="messages" closable="true"/>
+            </p:panel>
+
+            <p:panel>
+                <h:panelGrid style="width: 100%" columns="5">
+                    <p:row>
+                        <p:commandButton value="Novo" icon="pi pi-plus-circle"
+                                         actionListener="#{novaEmpresaController.init()}"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="messages gridPrincipal gridSecundario"/>
+
+                        <i class="pi pi-ellipsis-v mr-2"/>
+
+                        <p:commandButton value="Salvar" icon="pi pi-check-circle"
+                                         actionListener="#{novaEmpresaController.salvar()}"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="messages gridPrincipal gridSecundario"
+                                         style="margin-left: 6px"/>
+
+                        <p:button value="Buscar" icon="pi pi-search"
+                                  outcome="/busca/empresa.xhtml"
+                                  styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                  style="float: right"/>
+                    </p:row>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel>
+                <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column style="width: 50%">
+                            <p:outputLabel for="nome" value="Nome:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="nome" value="#{novaEmpresaController.empresaAssociada.nome}"
+                                         required="true"
+                                         requiredMessage="Nome é obrigatório."
+                                         maxlength="100"
+                                         size="50"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column style="width: 50%">
+                            <p:outputLabel for="telefone" value="Telefone:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputMask id="telefone" value="#{novaEmpresaController.empresaAssociada.telefone}"
+                                         mask="(99) 9 9999-9999"
+                                         maxlength="100"
+                                         size="50"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <h2>Endereço</h2>
+                <p:panelGrid id="gridSecundario" style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column style="width: 50%">
+                            <p:outputLabel for="rua" value="Rua:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="rua" value="#{novaEmpresaController.empresaAssociada.endereco.rua}"
+                                         maxlength="100"
+                                         size="50"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column style="width: 50%">
+                            <p:outputLabel for="bairro" value="Bairro:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="bairro" value="#{novaEmpresaController.empresaAssociada.endereco.bairro}"
+                                         maxlength="50"
+                                         size="50"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column style="width: 50%">
+                            <p:outputLabel for="numero" value="Número:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputNumber id="numero" value="#{novaEmpresaController.empresaAssociada.endereco.numero}"
+                                           decimalPlaces="0"
+                                           maxlength="99999"
+                                           size="50"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column style="width: 50%">
+                            <p:outputLabel for="cidade" value="Cidade:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="cidade" value="#{novaEmpresaController.empresaAssociada.endereco.cidade}"
+                                         maxlength="100"
+                                         size="50"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+            </p:panel>
+
+            <!-- Incluir rodapé -->
+            <ui:include src="/rsc/templates/rodape.xhtml"/>
+        </h:form>
+    </h:body>
+</f:view>
+</html>

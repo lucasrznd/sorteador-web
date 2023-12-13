@@ -1,7 +1,6 @@
 package com.lucasffrezende.sorteadorweb.repositories;
 
 import com.lucasffrezende.sorteadorweb.models.Brinde;
-import com.lucasffrezende.sorteadorweb.models.brinde;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
