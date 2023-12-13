@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 public class BrindeRepository {
-    
+
     @PersistenceContext
     private EntityManager em;
 
@@ -28,7 +28,7 @@ public class BrindeRepository {
 
     @Transactional
     public void delete(Brinde brinde) {
-        em.remove(brinde);
+        em.remove(em.contains(brinde) ? brinde : em.merge(brinde));
     }
 
 }

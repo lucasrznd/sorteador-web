@@ -21,6 +21,14 @@ public class TipoBrindeRepository {
         return tipoBrindeList;
     }
 
+    public List<TipoBrinde> buscar(String tipo) {
+        Query query = em.createQuery("SELECT tp FROM TipoBrinde tp WHERE tp.tipo LIKE :tipo");
+        query.setParameter("tipo", "%" + tipo + "%");
+
+        List<TipoBrinde> tipoBrindeList = query.getResultList();
+        return tipoBrindeList;
+    }
+
     @Transactional
     public void salvar(TipoBrinde tipoBrinde) {
         em.merge(tipoBrinde);
@@ -28,7 +36,7 @@ public class TipoBrindeRepository {
 
     @Transactional
     public void delete(TipoBrinde tipoBrinde) {
-        em.remove(tipoBrinde);
+        em.remove(em.contains(tipoBrinde) ? tipoBrinde : em.merge(tipoBrinde));
     }
-    
+
 }

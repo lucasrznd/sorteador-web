@@ -28,7 +28,7 @@ public class UsuarioRepository {
 
     @Transactional
     public void delete(Usuario usuario) {
-        em.remove(usuario);
+        em.remove(em.contains(usuario) ? usuario : em.merge(usuario));
     }
-    
+
 }

@@ -28,7 +28,7 @@ public class ResultadoSorteioRepository {
 
     @Transactional
     public void delete(ResultadoSorteio resultadoSorteio) {
-        em.remove(resultadoSorteio);
+        em.remove(em.contains(resultadoSorteio) ? resultadoSorteio : em.merge(resultadoSorteio));
     }
-    
+
 }

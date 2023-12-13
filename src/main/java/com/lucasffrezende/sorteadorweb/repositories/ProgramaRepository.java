@@ -19,7 +19,7 @@ public class ProgramaRepository {
 
     @Transactional
     public void delete(Programa programa) {
-        em.merge(programa);
+        em.remove(em.contains(programa) ? programa : em.merge(programa));
     }
 
 }

@@ -28,7 +28,7 @@ public class OuvinteRepository {
 
     @Transactional
     public void delete(Ouvinte ouvinte) {
-        em.remove(ouvinte);
+        em.remove(em.contains(ouvinte) ? ouvinte : em.merge(ouvinte));
     }
 
 }
