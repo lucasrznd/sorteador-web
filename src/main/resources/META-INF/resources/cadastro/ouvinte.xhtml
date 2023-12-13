@@ -9,7 +9,7 @@
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
 
     <h:head>
-        <title>SorteadorEducadora - Nova Empresa</title>
+        <title>SorteadorEducadora - Novo Ouvinte</title>
 
         <!-- FavIcon e Import CSS -->
         <link rel="shortcut icon" type="image/x-icon"
@@ -23,7 +23,7 @@
             <ui:include src="/rsc/templates/menu.xhtml"/>
 
             <p:panel>
-                <h2>Nova Empresa</h2>
+                <h2>Novo Ouvinte</h2>
                 <p:messages id="messages" closable="true"/>
             </p:panel>
 
@@ -31,20 +31,20 @@
                 <h:panelGrid style="width: 100%" columns="5">
                     <p:row>
                         <p:commandButton value="Novo" icon="pi pi-plus-circle"
-                                         actionListener="#{novaEmpresaController.init()}"
+                                         actionListener="#{novoOuvinteController.init()}"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                          update="messages gridPrincipal gridSecundario"/>
 
                         <i class="pi pi-ellipsis-v mr-2"/>
 
                         <p:commandButton value="Salvar" icon="pi pi-check-circle"
-                                         actionListener="#{novaEmpresaController.salvar()}"
+                                         actionListener="#{novoOuvinteController.salvar()}"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                          update="messages gridPrincipal gridSecundario"
                                          style="margin-left: 6px"/>
 
                         <p:button value="Buscar" icon="pi pi-search"
-                                  outcome="/busca/empresa.xhtml"
+                                  outcome="/busca/ouvinte.xhtml"
                                   styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                   style="float: right"/>
                     </p:row>
@@ -58,7 +58,7 @@
                             <p:outputLabel for="nome" value="Nome:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="nome" value="#{novaEmpresaController.empresaAssociada.nome}"
+                            <p:inputText id="nome" value="#{novoOuvinteController.ouvinte.pessoa.nome}"
                                          required="true"
                                          requiredMessage="Nome é obrigatório."
                                          maxlength="100"
@@ -71,7 +71,9 @@
                             <p:outputLabel for="telefone" value="Telefone:"/>
                         </p:column>
                         <p:column>
-                            <p:inputMask id="telefone" value="#{novaEmpresaController.empresaAssociada.telefone}"
+                            <p:inputMask id="telefone" value="#{novoOuvinteController.ouvinte.pessoa.telefone}"
+                                         required="true"
+                                         requiredMessage="Telefone é obrigatório."
                                          mask="(99) 9 9999-9999"
                                          maxlength="100"
                                          size="50"/>
@@ -86,7 +88,7 @@
                             <p:outputLabel for="rua" value="Rua:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="rua" value="#{novaEmpresaController.empresaAssociada.endereco.rua}"
+                            <p:inputText id="rua" value="#{novoOuvinteController.ouvinte.pessoa.endereco.rua}"
                                          maxlength="100"
                                          size="50"/>
                         </p:column>
@@ -97,7 +99,7 @@
                             <p:outputLabel for="bairro" value="Bairro:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="bairro" value="#{novaEmpresaController.empresaAssociada.endereco.bairro}"
+                            <p:inputText id="bairro" value="#{novoOuvinteController.ouvinte.pessoa.endereco.bairro}"
                                          maxlength="50"
                                          size="50"/>
                         </p:column>
@@ -108,7 +110,7 @@
                             <p:outputLabel for="numero" value="Número:"/>
                         </p:column>
                         <p:column>
-                            <p:inputNumber id="numero" value="#{novaEmpresaController.empresaAssociada.endereco.numero}"
+                            <p:inputNumber id="numero" value="#{novoOuvinteController.ouvinte.pessoa.endereco.numero}"
                                            decimalPlaces="0"
                                            maxlength="99999"
                                            size="50"/>
@@ -120,7 +122,7 @@
                             <p:outputLabel for="cidade" value="Cidade:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="cidade" value="#{novaEmpresaController.empresaAssociada.endereco.cidade}"
+                            <p:inputText id="cidade" value="#{novoOuvinteController.ouvinte.pessoa.endereco.cidade}"
                                          maxlength="100"
                                          size="50"/>
                         </p:column>

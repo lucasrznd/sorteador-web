@@ -1,5 +1,6 @@
 package com.lucasffrezende.sorteadorweb.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Table(name = "tb_ouvinte")
 public class Ouvinte extends GenericDomain {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Pessoa pessoa;
 
 }
