@@ -51,6 +51,19 @@ public class EmpresaAssociadaRepository {
         return em.createQuery(criteriaQuery).getResultList();
     }
 
+    public List<EmpresaAssociada> buscaPorNome(String nome) {
+        Query query = em.createQuery("SELECT e FROM EmpresaAssociada e WHERE e.nome LIKE :nome");
+        query.setParameter("nome", "%" + nome + "%");
+
+        List<EmpresaAssociada> empresaAssociadaList = query.getResultList();
+        return empresaAssociadaList;
+    }
+
+    public EmpresaAssociada buscaPorCodigo(Long codigo) {
+        EmpresaAssociada empresaAssociada = em.find(EmpresaAssociada.class, codigo);
+        return empresaAssociada;
+    }
+
     @Transactional
     public void salvar(EmpresaAssociada empresaAssociada) {
         em.merge(empresaAssociada);

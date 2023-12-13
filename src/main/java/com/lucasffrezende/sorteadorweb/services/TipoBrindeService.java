@@ -13,6 +13,10 @@ public class TipoBrindeService {
     @Autowired
     private TipoBrindeRepository tipoBrindeRepository;
 
+    public List<TipoBrinde> listar() {
+        return tipoBrindeRepository.listar();
+    }
+
     public List<TipoBrinde> buscar(String tipo) {
         return tipoBrindeRepository.buscar(tipo);
     }

@@ -21,6 +21,14 @@ public class EmpresaAssociadaService {
         return empresaAssociadaRepository.buscaDinamica(empresaAssociada);
     }
 
+    public List<EmpresaAssociada> buscaPorNome(String nome) {
+        return empresaAssociadaRepository.buscaPorNome(nome);
+    }
+
+    public EmpresaAssociada buscaPorCodigo(Long codigo) {
+        return empresaAssociadaRepository.buscaPorCodigo(codigo);
+    }
+
     public void salvar(EmpresaAssociada empresaAssociada) {
         empresaAssociadaRepository.salvar(empresaAssociada);
     }
