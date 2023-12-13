@@ -14,8 +14,10 @@ import lombok.Setter;
 @Table(name = "tb_usuario")
 public class Usuario extends GenericDomain {
 
+    private String nome;
     private String login;
     private String senha;
+    private Boolean ativo;
 
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;

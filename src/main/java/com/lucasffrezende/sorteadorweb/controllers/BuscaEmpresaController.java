@@ -8,7 +8,6 @@ import com.lucasffrezende.sorteadorweb.utils.ListaUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
-import org.omnifaces.util.Faces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

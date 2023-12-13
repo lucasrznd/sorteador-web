@@ -6,26 +6,16 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_sorteio")
-public class Sorteio extends GenericDomain {
-
-    @ManyToOne
-    private Programa programa;
-
-    private LocalDateTime dataHora;
-
-    @ManyToOne
-    private Brinde brinde;
+@Table(name = "tb_usuario_programa")
+public class UsuarioPrograma extends GenericDomain {
 
     @ManyToOne
     private Usuario usuario;
 
     @ManyToOne
-    private ResultadoSorteio resultado;
+    private Programa programa;
 
 }
