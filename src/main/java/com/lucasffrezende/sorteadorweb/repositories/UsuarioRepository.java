@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,10 +21,12 @@ public class UsuarioRepository {
         return usuarioList;
     }
 
+    @Transactional
     public void salvar(Usuario usuario) {
         em.merge(usuario);
     }
 
+    @Transactional
     public void delete(Usuario usuario) {
         em.remove(usuario);
     }

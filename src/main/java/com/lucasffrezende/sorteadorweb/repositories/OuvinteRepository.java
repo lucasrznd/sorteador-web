@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,10 +21,12 @@ public class OuvinteRepository {
         return ouvinteList;
     }
 
+    @Transactional
     public void salvar(Ouvinte ouvinte) {
         em.merge(ouvinte);
     }
 
+    @Transactional
     public void delete(Ouvinte ouvinte) {
         em.remove(ouvinte);
     }

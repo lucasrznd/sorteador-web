@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,10 +21,12 @@ public class ResultadoSorteioRepository {
         return resultadoSorteioList;
     }
 
+    @Transactional
     public void salvar(ResultadoSorteio resultadoSorteio) {
         em.merge(resultadoSorteio);
     }
 
+    @Transactional
     public void delete(ResultadoSorteio resultadoSorteio) {
         em.remove(resultadoSorteio);
     }
