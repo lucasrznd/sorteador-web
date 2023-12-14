@@ -1,10 +1,7 @@
 package com.lucasffrezende.sorteadorweb.models;
 
 import com.lucasffrezende.sorteadorweb.models.enums.TipoUsuario;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +11,8 @@ import lombok.Setter;
 @Table(name = "tb_usuario")
 public class Usuario extends GenericDomain {
 
-    private String nome;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Pessoa pessoa;
     private String login;
     private String senha;
     private Boolean ativo;

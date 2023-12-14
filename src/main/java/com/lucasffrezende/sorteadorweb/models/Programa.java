@@ -12,5 +12,6 @@ import lombok.Setter;
 public class Programa extends GenericDomain {
 
     private String nome;
+    private Boolean ativo;
 
 }
