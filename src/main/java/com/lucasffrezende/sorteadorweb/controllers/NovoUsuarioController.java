@@ -35,7 +35,7 @@ public class NovoUsuarioController implements Serializable {
     public void salvar() {
         usuarioService.salvar(usuario);
 
-        usuario = new Usuario();
+        init();
         Messages.addGlobalInfo(MSG_SALVO_SUCESSO.getMsg());
     }
 

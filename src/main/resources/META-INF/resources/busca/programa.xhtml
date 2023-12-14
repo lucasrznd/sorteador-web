@@ -9,10 +9,11 @@
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
 
     <h:head>
-        <title>SorteadorEducadora - Buscar Tipo de Brinde</title>
+        <title>SorteadorEducadora - Buscar Programa</title>
 
         <!-- FavIcon e Import CSS -->
-        <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
+        <link rel="shortcut icon" type="image/x-icon"
+              href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
         <h:outputStylesheet name="/rsc/css/estilo.css"/>
 
         <!-- Escala em dispositivos moveis -->
@@ -25,7 +26,7 @@
             <ui:include src="/rsc/templates/menu.xhtml"/>
 
             <p:panel>
-                <h2>Buscar Tipo de Brinde</h2>
+                <h2>Buscar Programa</h2>
                 <p:messages id="messages" closable="true"/>
             </p:panel>
 
@@ -33,13 +34,13 @@
                 <h:panelGrid style="width: 100%" columns="5">
                     <p:row>
                         <p:button value="Novo" icon="pi pi-plus-circle"
-                                  outcome="/cadastro/tipo-brinde.xhtml"
+                                  outcome="/cadastro/programa.xhtml"
                                   styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
 
                         <i class="pi pi-ellipsis-v mr-2"/>
 
                         <p:commandButton value="Buscar" icon="pi pi-search"
-                                         actionListener="#{buscaTipoBrindeController.buscar()}"
+                                         actionListener="#{buscaProgramaController.buscar()}"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                          update="messages gridPrincipal dataTable"
                                          style="margin-left: 6px"/>
@@ -51,29 +52,48 @@
                 <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
                     <p:row style="text-align: center">
                         <p:column styleClass="column-large-screen">
-                            <p:outputLabel for="tipo" value="Tipo:"/>
+                            <p:outputLabel for="nome" value="Nome:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="tipo" value="#{buscaTipoBrindeController.tipoBrinde.tipo}"
+                            <p:inputText id="nome" value="#{buscaProgramaController.usuarioPrograma.programa.nome}"
                                          maxlength="150"
                                          styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="locutor" value="Locutor:"/>
+                        </p:column>
+                        <p:column>
+                            <p:autoComplete id="locutor"
+                                            value="#{buscaProgramaController.usuarioPrograma.usuario}"
+                                            completeMethod="#{buscaProgramaController.buscarLocutor}"
+                                            var="locutor"
+                                            itemLabel="#{locutor.pessoa.nome}" itemValue="#{locutor}"
+                                            converter="#{usuarioConverter}" forceSelection="true"
+                                            style="text-transform: uppercase;"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
             </p:panel>
 
             <p:panel>
-                <p:dataTable id="dataTable" value="#{buscaTipoBrindeController.tipoBrindeList}"
-                             var="tipoBrinde" showGridlines="true"
+                <p:dataTable id="dataTable" value="#{buscaProgramaController.usuarioProgramaList}"
+                             var="usuarioPrograma" showGridlines="true"
                              paginator="true" rows="5"
                              reflow="true">
 
                     <p:column headerText="Código" style="text-align: center;">
-                        #{tipoBrinde.codigo}
+                        #{usuarioPrograma.codigo}
                     </p:column>
 
-                    <p:column headerText="Tipo" style="text-align: center;">
-                        #{tipoBrinde.tipo}
+                    <p:column headerText="Nome" style="text-align: center;">
+                        #{usuarioPrograma.programa.nome}
+                    </p:column>
+
+                    <p:column headerText="Locutor" style="text-align: center;">
+                        #{usuarioPrograma.usuario.pessoa.nome}
                     </p:column>
 
                     <p:column headerText="Editar/Excluir" style="text-align: center;">
@@ -83,23 +103,23 @@
                                          oncomplete="PF('modal').show()"
                                          update="formModal"
                                          process="@this">
-                            <f:setPropertyActionListener value="#{tipoBrinde}"
-                                                         target="#{buscaTipoBrindeController.tipoBrinde}"/>
+                            <f:setPropertyActionListener value="#{usuarioPrograma}"
+                                                         target="#{buscaProgramaController.usuarioPrograma}"/>
                         </p:commandButton>
                         <!-- Fim código para botão Editar -->
 
                         <i class="pi pi-ellipsis-v mr-2"/>
 
                         <!-- Inicio código para botão delete -->
-                        <p:commandButton action="#{buscaTipoBrindeController.delete()}"
+                        <p:commandButton action="#{buscaProgramaController.delete()}"
                                          update="dataTable :formModal:growlMessage"
                                          icon="pi pi-trash"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat">
                             <p:confirm header="Confirmação" message="Deseja remover este registro?"
                                        icon="pi pi-info-circle"/>
                             <f:setPropertyActionListener
-                                    target="#{buscaTipoBrindeController.tipoBrinde}"
-                                    value="#{tipoBrinde}"/>
+                                    target="#{buscaProgramaController.usuarioPrograma}"
+                                    value="#{usuarioPrograma}"/>
                         </p:commandButton>
 
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true"
@@ -127,15 +147,30 @@
                 <p:panelGrid style="width: 100%" layout="tabular" columns="0">
                     <p:row style="text-align: center">
                         <p:column styleClass="column-large-screen">
-                            <p:outputLabel for="tipoModal" value="Tipo:"/>
+                            <p:outputLabel for="nomeModal" value="Nome:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="tipoModal" value="#{buscaTipoBrindeController.tipoBrinde.tipo}"
+                            <p:inputText id="nomeModal" value="#{buscaProgramaController.usuarioPrograma.programa.nome}"
                                          required="true"
-                                         requiredMessage="Tipo é obrigatório."
+                                         requiredMessage="Nome é obrigatório."
                                          maxlength="150"
-                                         styleClass="input-text-responsive"
-                                         placeholder="EX: COMIDA, BEBIDA, CONVITE, FERRAMENTA"/>
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="locutorModal" value="Locutor:"/>
+                        </p:column>
+                        <p:column>
+                            <p:autoComplete id="locutorModal"
+                                            value="#{buscaProgramaController.usuarioPrograma.usuario}"
+                                            completeMethod="#{buscaProgramaController.buscarLocutor}"
+                                            var="locutor"
+                                            itemLabel="#{locutor.pessoa.nome}" itemValue="#{locutor}"
+                                            converter="#{usuarioConverter}" forceSelection="true"
+                                            style="text-transform: uppercase;"
+                                            requiredMessage="Locutor é obrigatório."/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -144,7 +179,7 @@
                     <p:panelGrid>
                         <p:commandButton value="Salvar" icon="pi pi-save"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
-                                         action="#{buscaTipoBrindeController.editar()}"
+                                         action="#{buscaProgramaController.editar()}"
                                          process="@form" update="@form :formPrincipal:dataTable growlMessage"/>
                     </p:panelGrid>
                 </div>

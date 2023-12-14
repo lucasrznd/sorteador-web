@@ -1,10 +1,9 @@
 package com.lucasffrezende.sorteadorweb.repositories;
 
 import com.lucasffrezende.sorteadorweb.models.Usuario;
+import com.lucasffrezende.sorteadorweb.models.enums.TipoUsuario;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,12 +35,29 @@ public class UsuarioRepository {
         }
     }
 
-    public List<Usuario> buscaPorNome(String nome) {
+    public List<Usuario> buscaPorNomeUsuario(String nome) {
         Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.pessoa.nome LIKE :nome");
         query.setParameter("nome", "%" + nome + "%");
 
         List<Usuario> usuarioList = query.getResultList();
         return usuarioList;
+    }
+
+    public List<Usuario> buscaPorNomeLocutor(String nome) {
+        try {
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.pessoa.nome LIKE :nome AND u.tipoUsuario = 'LOCUTOR'");
+            query.setParameter("nome", "%" + nome + "%");
+
+            List<Usuario> usuarioList = query.getResultList();
+            return usuarioList;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Usuario buscaPorCodigo(Long codigo) {
+        Usuario usuario = em.find(Usuario.class, codigo);
+        return usuario;
     }
 
     @Transactional

@@ -40,7 +40,7 @@ public class BuscaUsuarioController implements Serializable {
     }
 
     public void buscar() {
-        usuarioList = usuarioService.buscaPorNome(usuario.getPessoa().getNome());
+        usuarioList = usuarioService.buscaPorNomeUsuario(usuario.getPessoa().getNome());
 
         ListaUtil.verificaTamanhoLista(usuarioList);
     }

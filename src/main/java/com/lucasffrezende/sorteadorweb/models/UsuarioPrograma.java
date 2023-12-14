@@ -1,5 +1,6 @@
 package com.lucasffrezende.sorteadorweb.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -15,7 +16,7 @@ public class UsuarioPrograma extends GenericDomain {
     @ManyToOne
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Programa programa;
 
 }

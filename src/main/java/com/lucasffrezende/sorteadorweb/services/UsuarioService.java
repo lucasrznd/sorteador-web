@@ -13,8 +13,16 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> buscaPorNome(String nome) {
-        return usuarioRepository.buscaPorNome(nome);
+    public List<Usuario> buscaPorNomeUsuario(String nome) {
+        return usuarioRepository.buscaPorNomeUsuario(nome);
+    }
+
+    public List<Usuario> buscaPorNomeLocutor(String nome) {
+        return usuarioRepository.buscaPorNomeLocutor(nome);
+    }
+
+    public Usuario buscaPorCodigo(Long codigo) {
+        return usuarioRepository.buscaPorCodigo(codigo);
     }
 
     public void salvar(Usuario usuario) {
