@@ -15,6 +15,9 @@
         <link rel="shortcut icon" type="image/x-icon"
               href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
         <h:outputStylesheet name="/rsc/css/estilo.css"/>
+
+        <!-- Escala em dispositivos moveis -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     </h:head>
 
     <h:body>
@@ -54,7 +57,7 @@
             <p:panel>
                 <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column styleClass="column-large-screen">
                             <p:outputLabel for="tipoBrinde" value="Tipo:"/>
                         </p:column>
                         <p:column>
@@ -63,7 +66,7 @@
                                              converter="omnifaces.SelectItemsConverter"
                                              required="true"
                                              requiredMessage="Tipo de Brinde é obrigatório."
-                                             style="width: 28rem;">
+                                             styleClass="ui-selectonemenu">
                                 <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
                                 <f:selectItems value="#{novoBrindeController.tipoBrindeList}" var="tipoBrinde"
                                                itemValue="#{tipoBrinde}" itemLabel="#{tipoBrinde.tipo}"/>
@@ -72,7 +75,7 @@
                     </p:row>
 
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column>
                             <p:outputLabel for="descricao" value="Descrição:"/>
                         </p:column>
                         <p:column>
@@ -80,23 +83,22 @@
                                          required="true"
                                          requiredMessage="Descrição é obrigatório."
                                          maxlength="100"
-                                         size="50"/>
+                                         styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
 
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column>
                             <p:outputLabel for="empresaAssociada" value="Empresa Associada:"/>
                         </p:column>
                         <p:column>
                             <p:autoComplete id="empresaAssociada"
                                             value="#{novoBrindeController.brinde.empresaAssociada}"
-                                            size="50"
                                             completeMethod="#{novoBrindeController.buscarEmpresaAssociada}"
                                             var="empresaAssociada"
                                             itemLabel="#{empresaAssociada.nome}" itemValue="#{empresaAssociada}"
                                             converter="#{empresaAssociadaConverter}" forceSelection="true"
-                                            style="text-transform: uppercase"
+                                            style="text-transform: uppercase;"
                                             required="true"
                                             requiredMessage="Empresa Associada é obrigatório."/>
                         </p:column>

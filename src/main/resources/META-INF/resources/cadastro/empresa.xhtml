@@ -15,6 +15,9 @@
         <link rel="shortcut icon" type="image/x-icon"
               href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
         <h:outputStylesheet name="/rsc/css/estilo.css"/>
+
+        <!-- Escala em dispositivos moveis -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     </h:head>
 
     <h:body>
@@ -54,7 +57,7 @@
             <p:panel>
                 <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column styleClass="column-large-screen">
                             <p:outputLabel for="nome" value="Nome:"/>
                         </p:column>
                         <p:column>
@@ -62,19 +65,19 @@
                                          required="true"
                                          requiredMessage="Nome é obrigatório."
                                          maxlength="100"
-                                         size="50"/>
+                                         styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
 
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column>
                             <p:outputLabel for="telefone" value="Telefone:"/>
                         </p:column>
                         <p:column>
                             <p:inputMask id="telefone" value="#{novaEmpresaController.empresaAssociada.telefone}"
                                          mask="(99) 9 9999-9999"
                                          maxlength="100"
-                                         size="50"/>
+                                         styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -82,47 +85,47 @@
                 <h2>Endereço</h2>
                 <p:panelGrid id="gridSecundario" style="width: 100%" layout="tabular" columns="0">
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column styleClass="column-large-screen">
                             <p:outputLabel for="rua" value="Rua:"/>
                         </p:column>
                         <p:column>
                             <p:inputText id="rua" value="#{novaEmpresaController.empresaAssociada.endereco.rua}"
                                          maxlength="100"
-                                         size="50"/>
+                                         styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
 
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column>
                             <p:outputLabel for="bairro" value="Bairro:"/>
                         </p:column>
                         <p:column>
                             <p:inputText id="bairro" value="#{novaEmpresaController.empresaAssociada.endereco.bairro}"
                                          maxlength="50"
-                                         size="50"/>
+                                         styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
 
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column>
                             <p:outputLabel for="numero" value="Número:"/>
                         </p:column>
                         <p:column>
-                            <p:inputNumber id="numero" value="#{novaEmpresaController.empresaAssociada.endereco.numero}"
-                                           decimalPlaces="0"
-                                           maxlength="99999"
-                                           size="50"/>
+                            <p:inputText id="numero" value="#{novaEmpresaController.empresaAssociada.endereco.numero}"
+                                         converter="jakarta.faces.Integer"
+                                         maxlength="30"
+                                         styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
 
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column>
                             <p:outputLabel for="cidade" value="Cidade:"/>
                         </p:column>
                         <p:column>
                             <p:inputText id="cidade" value="#{novaEmpresaController.empresaAssociada.endereco.cidade}"
                                          maxlength="100"
-                                         size="50"/>
+                                         styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>

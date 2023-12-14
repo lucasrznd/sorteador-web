@@ -1,3 +1,59 @@
 h2 {
     color: #0058a9;
 }
+
+/* INPUT TEXT - Estilo padrão para todos os tamanhos de tela */
+.input-text-responsive {
+    width: 70%;
+}
+
+/* INPUT TEXT - Estilo específico para dispositivos móveis com largura máxima de 767 pixels */
+@media only screen and (max-width: 767px) {
+    .input-text-responsive {
+        width: 100%; /* Ou qualquer largura desejada para dispositivos móveis */
+    }
+}
+
+/* SELECT ONE MENU - Estilo padrão para todos os tamanhos de tela */
+.ui-selectonemenu {
+    width: 70% !important;
+}
+
+/* SELECT ONE MENU - Estilo específico para dispositivos móveis com largura máxima de 767 pixels */
+@media only screen and (max-width: 767px) {
+    .ui-selectonemenu {
+        width: 100% !important; /* Ou qualquer largura desejada para dispositivos móveis */
+    }
+}
+
+/* AUTO COMPLETE - Estilo padrão para todos os tamanhos de tela */
+.ui-autocomplete {
+    width: 100% !important;
+}
+
+.ui-autocomplete-input {
+    width: 70% !important;
+}
+
+/* AUTO COMPLETE - Estilo específico para dispositivos móveis com largura máxima de 767 pixels */
+@media only screen and (max-width: 767px) {
+    .ui-autocomplete {
+        width: 100% !important; /* Ou qualquer largura desejada para dispositivos móveis */
+    }
+
+    .ui-autocomplete-input {
+        width: 100% !important; /* Ou qualquer largura desejada para dispositivos móveis */
+    }
+}
+
+/* COLUNA - Estilo padrão de Coluna para todos os tamanhos de tela */
+.column-large-screen {
+    width: 50%;
+}
+
+/* COLUNA - Estilo específico para dispositivos móveis com largura máxima de 767 pixels */
+@media only screen and (max-width: 767px) {
+    .column-large-screen {
+        width: 30%; /* Ou qualquer largura desejada para dispositivos móveis */
+    }
+}

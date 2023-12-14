@@ -14,6 +14,9 @@
         <!-- FavIcon e Import CSS -->
         <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
         <h:outputStylesheet name="/rsc/css/estilo.css"/>
+
+        <!-- Escala em dispositivos moveis -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     </h:head>
 
     <h:body>
@@ -47,13 +50,13 @@
             <p:panel>
                 <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column styleClass="column-large-screen">
                             <p:outputLabel for="tipo" value="Tipo:"/>
                         </p:column>
                         <p:column>
                             <p:inputText id="tipo" value="#{buscaTipoBrindeController.tipoBrinde.tipo}"
                                          maxlength="150"
-                                         size="50"/>
+                                         styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -62,7 +65,8 @@
             <p:panel>
                 <p:dataTable id="dataTable" value="#{buscaTipoBrindeController.tipoBrindeList}"
                              var="tipoBrinde" showGridlines="true"
-                             paginator="true" rows="5">
+                             paginator="true" rows="5"
+                             reflow="true">
 
                     <p:column headerText="Código" style="text-align: center;">
                         #{tipoBrinde.codigo}
@@ -112,14 +116,17 @@
 
         <!-- Inicio do Modal -->
         <p:dialog modal="true"
-                  header="Editar Dados" height="150" width="800" widgetVar="modal"
-                  maximizable="true">
+                  header="Editar Dados" height="80%" width="80%" widgetVar="modal"
+                  maximizable="true"
+                  draggable="false"
+                  responsive="true"
+                  position="center">
             <h:form id="formModal">
 
                 <p:growl id="growlMessage" showDetail="true"/>
                 <p:panelGrid style="width: 100%" layout="tabular" columns="0">
                     <p:row style="text-align: center">
-                        <p:column style="width: 50%">
+                        <p:column styleClass="column-large-screen">
                             <p:outputLabel for="tipoModal" value="Tipo:"/>
                         </p:column>
                         <p:column>
@@ -127,7 +134,8 @@
                                          required="true"
                                          requiredMessage="Tipo é obrigatório."
                                          maxlength="150"
-                                         size="50" placeholder="EX: COMIDA, BEBIDA, CONVITE, FERRAMENTA"/>
+                                         styleClass="input-text-responsive"
+                                         placeholder="EX: COMIDA, BEBIDA, CONVITE, FERRAMENTA"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
