@@ -17,8 +17,12 @@ public class SorteioService {
         return sorteioRepository.listar();
     }
 
-    public Sorteio obterUltimoSorteio() {
-        return sorteioRepository.obterUltimoSorteio();
+    public List<Sorteio> buscaDinamica(Sorteio sorteio) {
+        return sorteioRepository.buscaDinamica(sorteio);
+    }
+
+    public Sorteio buscaPorCodigo(Long codigo) {
+        return sorteioRepository.buscaPorCodigo(codigo);
     }
 
     public void salvar(Sorteio sorteio) {

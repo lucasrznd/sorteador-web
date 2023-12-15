@@ -36,7 +36,9 @@
                         <p:commandButton value="Novo" icon="pi pi-plus-circle"
                                          actionListener="#{novoSorteioController.init()}"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
-                                         update="messages gridPrincipal gridSecundario ouvintePick panelGridButton"/>
+                                         update="messages gridPrincipal gridSecundario ouvintePick
+                                         :formModal:dataTable
+                                         panelGridButton"/>
 
                         <i class="pi pi-ellipsis-v mr-2"/>
 
@@ -48,23 +50,23 @@
 
                         <p:graphicImage library="imgs" name="ellipsis-v-icon.png"
                                         style="margin-left: 10px;width: 3.5px;"
-                                        rendered="#{novoSorteioController.ouvinteSorteio.codigo == null}"/>
+                                        rendered="#{novoSorteioController.sorteio.codigo == null}"/>
 
                         <p:commandButton value="Importar" icon="pi pi-upload"
                                          oncomplete="PF('modal').show()"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
-                                         update="messages gridPrincipal gridSecundario ouvintePick panelGridButton"
-                                         rendered="#{novoSorteioController.ouvinteSorteio.codigo == null}"
+                                         update="gridSecundario ouvintePick panelGridButton"
+                                         rendered="#{novoSorteioController.sorteio.codigo == null}"
                                          style="margin-left: 10px"/>
 
                         <p:graphicImage library="imgs" name="ellipsis-v-icon.png"
                                         style="margin-left: 10px;width: 3.5px;"
-                                        rendered="#{novoSorteioController.ouvinteSorteio.codigo != null}"/>
+                                        rendered="#{novoSorteioController.sorteio.codigo != null}"/>
 
                         <p:commandButton value="Sortear" icon="pi pi-gift"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                          update="messages gridPrincipal gridSecundario ouvintePick"
-                                         rendered="#{novoSorteioController.ouvinteSorteio.codigo != null}"
+                                         rendered="#{novoSorteioController.sorteio.codigo != null}"
                                          style="margin-left: 10px"/>
 
                         <p:button value="Buscar" icon="pi pi-search"
@@ -83,9 +85,10 @@
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="programa"
-                                             value="#{novoSorteioController.ouvinteSorteio.sorteio.programa}"
+                                             value="#{novoSorteioController.sorteio.programa}"
                                              converter="omnifaces.SelectItemsConverter"
-
+                                             required="true"
+                                             requiredMessage="Programa é obrigatório."
                                              styleClass="ui-selectonemenu">
                                 <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
                                 <f:selectItems value="#{novoSorteioController.programaList}" var="programa"
@@ -96,13 +99,15 @@
 
                     <p:row style="text-align: center">
                         <p:column>
-                            <p:outputLabel for="locutor" value="Locutor:"/>
+                            <p:outputLabel for="usuario" value="Usuário:"/>
                         </p:column>
                         <p:column>
-                            <p:autoComplete id="locutor"
-                                            value="#{novoSorteioController.ouvinteSorteio.sorteio.usuario}"
+                            <p:autoComplete id="usuario"
+                                            value="#{novoSorteioController.sorteio.usuario}"
                                             completeMethod="#{novoSorteioController.buscarUsuario}"
                                             var="usuario"
+                                            required="true"
+                                            requiredMessage="Usuário é obrigatório."
                                             itemLabel="#{usuario.pessoa.nome}" itemValue="#{usuario}"
                                             converter="#{usuarioConverter}" forceSelection="true"
                                             style="text-transform: uppercase;"
@@ -116,11 +121,13 @@
                         </p:column>
                         <p:column>
                             <p:autoComplete id="brinde"
-                                            value="#{novoSorteioController.ouvinteSorteio.sorteio.brinde}"
+                                            value="#{novoSorteioController.sorteio.brinde}"
                                             completeMethod="#{novoSorteioController.buscarBrinde}"
                                             var="brinde"
                                             itemLabel="#{brinde.descricao}" itemValue="#{brinde}"
                                             converter="#{brindeConverter}" forceSelection="true"
+                                            required="true"
+                                            requiredMessage="Brinde é obrigatório."
                                             style="text-transform: uppercase;"/>
                         </p:column>
                     </p:row>
@@ -137,7 +144,10 @@
                                         showSourceFilter="true" showTargetFilter="true"
                                         sourceFilterPlaceholder="Selecione os nomes desejados"
                                         targetFilterPlaceholder="Participantes"
-                                        filterMatchMode="contains" converter="#{ouvinteConverter}" responsive="true">
+                                        filterMatchMode="contains"
+                                        required="true"
+                                        requiredMessage="Ouvinte é obrigatório."
+                                        converter="#{ouvinteConverter}" responsive="true">
 
                                 <f:facet name="sourceCaption">Todos</f:facet>
                                 <f:facet name="targetCaption">Participando</f:facet>
@@ -158,33 +168,97 @@
             <h:form id="formModal">
 
                 <p:growl id="growlMessage" showDetail="true"/>
-                <p:panelGrid style="width: 100%" layout="tabular" columns="0">
-                    <p:row style="text-align: center">
-                        <p:column styleClass="column-large-screen">
-                            <p:outputLabel for="programaModal" value="Programa:"/>
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="programaModal"
-                                             value="#{novoSorteioController.ouvinteSorteio.sorteio.programa}"
-                                             converter="omnifaces.SelectItemsConverter"
+                <p:panel>
+                    <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                        <p:row style="text-align: center">
+                            <p:column styleClass="column-large-screen">
+                                <p:outputLabel for="programaModal" value="Programa:"/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="programaModal"
+                                                 value="#{novoSorteioController.sorteio.programa}"
+                                                 converter="omnifaces.SelectItemsConverter"
 
-                                             styleClass="ui-selectonemenu">
-                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
-                                <f:selectItems value="#{novoSorteioController.programaList}" var="programa"
-                                               itemValue="#{programa}" itemLabel="#{programa.nome}"/>
-                            </p:selectOneMenu>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+                                                 styleClass="ui-selectonemenu">
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
+                                    <f:selectItems value="#{novoSorteioController.programaList}" var="programa"
+                                                   itemValue="#{programa}" itemLabel="#{programa.nome}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
 
-                <div style="display: flex; justify-content: center">
-                    <p:panelGrid>
-                        <p:commandButton value="Salvar" icon="pi pi-save"
-                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
-                                         action="#{novoSorteioController.editar()}"
-                                         process="@form" update="@form :formPrincipal growlMessage"/>
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="dataCadastro" value="Data de Cadastro:"/>
+                            </p:column>
+                            <p:column>
+                                <p:calendar id="dataCadastro" locale="pt" pattern="dd/MM/yyyy" readonlyInput="true"
+                                            value="#{novoSorteioController.sorteio.dataHora}"
+                                            showOn="button"
+                                            navigator="true"
+                                            styleClass="ui-calendar"/>
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
-                </div>
+                </p:panel>
+
+                <p:panel>
+                    <p:dataTable id="dataTable" value="#{novoSorteioController.sorteioList}"
+                                 var="sorteio" showGridlines="true"
+                                 paginator="true" rows="5"
+                                 reflow="true">
+
+                        <p:column headerText="Código" style="text-align: center;">
+                            #{sorteio.codigo}
+                        </p:column>
+
+                        <p:column headerText="Brinde" style="text-align: center;">
+                            #{sorteio.brinde.descricao}
+                        </p:column>
+
+                        <p:column headerText="Empresa" style="text-align: center;">
+                            #{sorteio.brinde.empresaAssociada.nome}
+                        </p:column>
+
+                        <p:column headerText="Programa" style="text-align: center;">
+                            #{sorteio.programa.nome}
+                        </p:column>
+
+                        <p:column headerText="Usuário" style="text-align: center;">
+                            #{sorteio.usuario.pessoa.nome}
+                        </p:column>
+
+                        <p:column headerText="Data/Hora" style="text-align: center;">
+                            <h:outputText value="#{sorteio.dataHora}">
+                                <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Importar" style="text-align: center;">
+                            <!-- Inicio código para botão delete -->
+                            <p:commandButton
+                                    actionListener="#{novoSorteioController.importar(sorteio)}"
+                                    icon="pi pi-upload"
+                                    update=":formModal:dataTable :formPrincipal:gridSecundario
+                                    :formPrincipal:gridPrincipal :formPrincipal:panelGridButton
+                                    :formModal:growlMessage"
+                                    oncomplete="PF('modal').hide();"
+                                    styleClass="ui-button-raised ui-button-secondary ui-button-flat">
+                            </p:commandButton>
+                            <!-- Fim código para botão delete -->
+                        </p:column>
+                    </p:dataTable>
+
+                    <div style="display: flex; justify-content: center">
+                        <p:panelGrid>
+                            <p:commandButton value="Buscar" icon="pi pi-search"
+                                             actionListener="#{novoSorteioController.buscar()}"
+                                             styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                             update=":formModal:growlMessage :formModal:dataTable :formPrincipal:gridPrincipal"
+                                             style="margin-left: 6px"/>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
             </h:form>
         </p:dialog>
         <!-- Fim do Modal -->

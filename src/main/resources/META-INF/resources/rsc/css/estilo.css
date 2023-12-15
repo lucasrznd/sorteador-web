@@ -2,6 +2,13 @@ h2 {
     color: #0058a9;
 }
 
+/* Muda a cor do botão do Calendário */
+.ui-datepicker-trigger {
+    background-color: #0058a9 !important;
+    border-color: #0058a9 !important;
+    color: #ffffff !important;
+}
+
 /* INPUT TEXT - Estilo padrão para todos os tamanhos de tela */
 .input-text-responsive {
     width: 70%;
@@ -43,6 +50,18 @@ h2 {
 
     .ui-autocomplete-input {
         width: 100% !important; /* Ou qualquer largura desejada para dispositivos móveis */
+    }
+}
+
+/* Estilo padrão para todos os tamanhos de tela */
+.ui-calendar .ui-inputfield {
+    width: 65%;
+}
+
+/* Estilo específico para dispositivos móveis com largura máxima de 767 pixels */
+@media only screen and (max-width: 767px) {
+    .ui-calendar .ui-inputfield {
+        width: 85%; /* Ou qualquer largura desejada para dispositivos móveis */
     }
 }
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum MensagemEnum {
 
     MSG_SALVO_SUCESSO("Salvo com sucesso."),
+    MSG_IMPORT_SUCESSO("Importado com sucesso."),
     MSG_EXCLUIDO_SUCESSO("Excluido com sucesso."),
     MSG_OPERACAO_CUMCLUIDA_SUCESSO("Operação concluída com sucesso."),
     MSG_NENHUM_REGISTRO("Nenhum registro encontrado.");

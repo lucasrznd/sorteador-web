@@ -1,11 +1,10 @@
 package com.lucasffrezende.sorteadorweb.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,5 +14,8 @@ public class Ouvinte extends GenericDomain {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Pessoa pessoa;
+
+    @ManyToMany(mappedBy = "ouvinteSet")
+    private Set<Sorteio> sorteioSet;
 
 }

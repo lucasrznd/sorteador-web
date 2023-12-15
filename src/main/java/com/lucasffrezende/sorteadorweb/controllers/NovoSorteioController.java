@@ -2,7 +2,10 @@ package com.lucasffrezende.sorteadorweb.controllers;
 
 import com.lucasffrezende.sorteadorweb.models.*;
 import com.lucasffrezende.sorteadorweb.services.*;
+import com.lucasffrezende.sorteadorweb.utils.GrowlView;
+import com.lucasffrezende.sorteadorweb.utils.ListaUtil;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
 import org.omnifaces.util.Messages;
@@ -11,12 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.MSG_NENHUM_REGISTRO;
-import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.MSG_SALVO_SUCESSO;
+import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.*;
 
 @Component
 @ViewScoped
@@ -25,6 +25,10 @@ public class NovoSorteioController implements Serializable {
 
     @Autowired
     private SorteioService sorteioService;
+
+    private Sorteio sorteio;
+    private Sorteio sorteioSelecionado;
+    private List<Sorteio> sorteioList;
 
     @Autowired
     private ProgramaService programaService;
@@ -41,22 +45,20 @@ public class NovoSorteioController implements Serializable {
     @Autowired
     private OuvinteService ouvinteService;
 
-    @Autowired
-    private OuvinteSorteioService ouvinteSorteioService;
-
-    private OuvinteSorteio ouvinteSorteio;
-    private List<OuvinteSorteio> ouvinteSorteioList;
-
     private List<Ouvinte> ouvintesDisponiveis;
     private List<Ouvinte> ouvintesSelecionados;
     private DualListModel ouvintesModel;
 
     @PostConstruct
     public void init() {
-        ouvinteSorteio = new OuvinteSorteio();
-        ouvinteSorteio.setOuvinte(new Ouvinte());
-        ouvinteSorteio.setSorteio(new Sorteio());
+        sorteio = new Sorteio();
+        sorteio.setPrograma(new Programa());
+        sorteio.setBrinde(new Brinde());
+        sorteio.setUsuario(new Usuario());
+        sorteio.setOuvinteSet(new HashSet<>());
+        sorteio.setResultado(new ResultadoSorteio());
 
+        sorteioList = new ArrayList<>();
         programaList = programaService.listar();
         ouvintesDisponiveis = ouvinteService.listar();
         ouvintesSelecionados = new ArrayList<>();
@@ -64,44 +66,44 @@ public class NovoSorteioController implements Serializable {
     }
 
     public void salvar() {
-        // Coloca os selecionados da DualListModel no Arraylist de selecionados
         ouvintesSelecionados = ouvintesModel.getTarget();
-        OuvinteSorteio novoOuvinteSorteio = null;
+        Set<Ouvinte> ouvinteSet = new HashSet<>(ouvintesSelecionados);
 
-        for (Ouvinte ouvinte : ouvintesSelecionados) {
-            if (!ouvinteJaParticipaDoSorteio(ouvinte)) {
-                novoOuvinteSorteio = new OuvinteSorteio();
+        sorteio.setOuvinteSet(ouvinteSet);
+        sorteioService.salvar(sorteio);
 
-                novoOuvinteSorteio.setSorteio(ouvinteSorteio.getSorteio());
-                novoOuvinteSorteio.getSorteio().setDataHora(LocalDateTime.now());
-                novoOuvinteSorteio.setOuvinte(ouvinte);
-
-                ouvinteSorteioService.salvar(novoOuvinteSorteio);
-            }
-        }
-
-        ouvinteSorteio = novoOuvinteSorteio;
         Messages.addGlobalInfo(MSG_SALVO_SUCESSO.getMsg());
     }
 
-    private boolean ouvinteJaParticipaDoSorteio(Ouvinte ouvinte) {
-        List<OuvinteSorteio> ouvinteSorteioList = ouvinteSorteioService.listar();
+    public void buscar() {
+        sorteioList = sorteioService.buscaDinamica(sorteio);
 
-        for (OuvinteSorteio ouvinteSort : ouvinteSorteioList) {
-            if (ouvinteSort.getOuvinte().getCodigo().equals(ouvinte.getCodigo()) &&
-                    ouvinteSort.getSorteio().getCodigo().equals(ouvinteSorteio.getSorteio().getCodigo())) {
-                return true;  // O ouvinte já participa do sorteio existente
+        ListaUtil.verificaTamanhoLista(sorteioList);
+    }
+
+    public void importar(Sorteio sorteioSelecionado) {
+        this.sorteio = sorteioService.buscaPorCodigo(sorteioSelecionado.getCodigo());
+
+        List<Object> participantes = new ArrayList<>();
+
+        ouvintesModel.setTarget(Arrays.asList(sorteio.getOuvinteSet().toArray()));
+        for (Object participante : ouvintesModel.getTarget()) {
+            for (Object ouvinte : ouvintesModel.getSource()) {
+                if (ouvinte.equals(participante)) {
+                    participantes.add(ouvinte);
+                }
             }
         }
 
-        return false;  // O ouvinte ainda não participa do sorteio existente
+        ouvintesModel.getSource().removeAll(participantes);
+        GrowlView.showInfo("Sucesso", MSG_IMPORT_SUCESSO.getMsg());
     }
 
     public List<Usuario> buscarUsuario(String nome) {
         usuarioList = usuarioService.buscaPorNomeUsuario(nome);
 
         if (usuarioList == null) {
-            Messages.addFlashGlobalWarn(MSG_NENHUM_REGISTRO.getMsg());
+            GrowlView.showInfo("Falha", MSG_NENHUM_REGISTRO.getMsg());
         }
         return usuarioList;
     }
