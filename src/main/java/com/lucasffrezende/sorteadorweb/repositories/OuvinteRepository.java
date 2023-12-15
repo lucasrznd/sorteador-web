@@ -61,6 +61,11 @@ public class OuvinteRepository {
         return em.createQuery(criteriaQuery).getResultList();
     }
 
+    public Ouvinte buscaPorCodigo(Long codigo) {
+        Ouvinte ouvinte = em.find(Ouvinte.class, codigo);
+        return ouvinte;
+    }
+
     @Transactional
     public void salvar(Ouvinte ouvinte) {
         em.merge(ouvinte);

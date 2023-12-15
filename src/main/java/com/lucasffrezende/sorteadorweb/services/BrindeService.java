@@ -17,6 +17,14 @@ public class BrindeService {
         return brindeRepository.buscaDinamica(brinde);
     }
 
+    public List<Brinde> buscaPorDescricao(String descricao) {
+        return brindeRepository.buscaPorDescricao(descricao);
+    }
+
+    public Brinde buscaPorCodigo(Long codigo) {
+        return brindeRepository.buscaPorCodigo(codigo);
+    }
+
     public void salvar(Brinde brinde) {
         brindeRepository.salvar(brinde);
     }

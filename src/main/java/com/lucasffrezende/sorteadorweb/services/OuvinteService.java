@@ -13,8 +13,16 @@ public class OuvinteService {
     @Autowired
     private OuvinteRepository ouvinteRepository;
 
+    public List<Ouvinte> listar() {
+        return ouvinteRepository.listar();
+    }
+
     public List<Ouvinte> buscaDinamica(Ouvinte ouvinte) {
         return ouvinteRepository.buscaDinamica(ouvinte);
+    }
+
+    public Ouvinte buscaPorCodigo(Long codigo) {
+        return ouvinteRepository.buscaPorCodigo(codigo);
     }
 
     public void salvar(Ouvinte ouvinte) {

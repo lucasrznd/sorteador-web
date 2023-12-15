@@ -18,7 +18,7 @@ public class UsuarioProgramaService {
     }
 
     public void salvar(UsuarioPrograma usuarioPrograma) {
-        usuarioPrograma.getUsuario().setAtivo(true);
+        usuarioPrograma.getPrograma().setAtivo(true);
 
         usuarioProgramaRepository.salvar(usuarioPrograma);
     }

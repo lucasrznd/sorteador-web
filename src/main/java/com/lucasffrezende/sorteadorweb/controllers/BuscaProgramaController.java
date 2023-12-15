@@ -4,7 +4,6 @@ import com.lucasffrezende.sorteadorweb.models.Pessoa;
 import com.lucasffrezende.sorteadorweb.models.Programa;
 import com.lucasffrezende.sorteadorweb.models.Usuario;
 import com.lucasffrezende.sorteadorweb.models.UsuarioPrograma;
-import com.lucasffrezende.sorteadorweb.services.ProgramaService;
 import com.lucasffrezende.sorteadorweb.services.UsuarioProgramaService;
 import com.lucasffrezende.sorteadorweb.services.UsuarioService;
 import com.lucasffrezende.sorteadorweb.utils.GrowlView;

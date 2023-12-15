@@ -1,5 +1,6 @@
 package com.lucasffrezende.sorteadorweb.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -12,10 +13,10 @@ import lombok.Setter;
 @Table(name = "tb_ouvinte_sorteio")
 public class OuvinteSorteio extends GenericDomain {
 
-    @ManyToOne
+    @ManyToOne()
     private Ouvinte ouvinte;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Sorteio sorteio;
 
 }

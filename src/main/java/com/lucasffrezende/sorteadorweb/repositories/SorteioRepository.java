@@ -21,6 +21,12 @@ public class SorteioRepository {
         return sorteioList;
     }
 
+    public Sorteio obterUltimoSorteio() {
+        Query query = em.createQuery("SELECT s FROM Sorteio s ORDER BY s.codigo DESC LIMIT 1");
+        Sorteio sorteio = (Sorteio) query.getSingleResult();
+        return sorteio;
+    }
+
     @Transactional
     public void salvar(Sorteio sorteio) {
         em.merge(sorteio);

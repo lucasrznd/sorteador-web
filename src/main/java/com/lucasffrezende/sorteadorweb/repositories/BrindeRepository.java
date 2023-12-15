@@ -59,6 +59,18 @@ public class BrindeRepository {
         return em.createQuery(criteriaQuery).getResultList();
     }
 
+    public List<Brinde> buscaPorDescricao(String descricao) {
+        Query query = em.createQuery("SELECT b FROM Brinde b WHERE b.descricao LIKE : descricao");
+        query.setParameter("descricao", "%" + descricao + "%");
+        List<Brinde> brindeList = query.getResultList();
+        return brindeList;
+    }
+
+    public Brinde buscaPorCodigo(Long codigo) {
+        Brinde brinde = em.find(Brinde.class, codigo);
+        return brinde;
+    }
+
     @Transactional
     public void salvar(Brinde brinde) {
         em.merge(brinde);
