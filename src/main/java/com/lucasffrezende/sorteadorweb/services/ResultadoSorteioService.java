@@ -14,6 +14,10 @@ public class ResultadoSorteioService {
     @Autowired
     private ResultadoSorteioRepository resultadoSorteioRepository;
 
+    public List<ResultadoSorteio> listar() {
+        return resultadoSorteioRepository.listar();
+    }
+
     public List<ResultadoSorteio> buscaDinamica(ResultadoSorteio resultadoSorteio) {
         return resultadoSorteioRepository.buscaDinamica(resultadoSorteio);
     }

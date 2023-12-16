@@ -4,6 +4,7 @@ import com.lucasffrezende.sorteadorweb.models.*;
 import com.lucasffrezende.sorteadorweb.services.BrindeService;
 import com.lucasffrezende.sorteadorweb.services.ProgramaService;
 import com.lucasffrezende.sorteadorweb.services.ResultadoSorteioService;
+import com.lucasffrezende.sorteadorweb.utils.GrowlView;
 import com.lucasffrezende.sorteadorweb.utils.ListaUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.MSG_EXCLUIDO_SUCESSO;
 import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.MSG_NENHUM_REGISTRO;
 
 @Component
@@ -63,6 +65,13 @@ public class BuscaResultadoSorteio implements Serializable {
             Messages.addFlashGlobalWarn(MSG_NENHUM_REGISTRO.getMsg());
         }
         return brindeList;
+    }
+
+    public void delete() {
+        resultadoSorteioService.delete(resultadoSorteio);
+
+        resultadoSorteioList.remove(resultadoSorteio);
+        GrowlView.showWarn("Sucesso", MSG_EXCLUIDO_SUCESSO.getMsg());
     }
 
 }

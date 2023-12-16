@@ -120,7 +120,8 @@
                     </p:column>
 
                     <p:column headerText="Ganhador" style="text-align: center;">
-                        #{resultadoSorteio.ouvinte.pessoa.nome}
+                        <p:outputLabel value="#{resultadoSorteio.ouvinte.pessoa.nome}"
+                                       style="font-weight: bold"/>
                     </p:column>
 
                     <p:column headerText="Brinde" style="text-align: center;">
@@ -159,6 +160,7 @@
 
                         <!-- Inicio código para botão delete -->
                         <p:commandButton action="#{buscaResultadoSorteio.delete()}"
+                                         update="dataTable :formPrincipal:messages"
                                          icon="pi pi-trash"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat">
                             <p:confirm header="Confirmação" message="Deseja remover este registro?"

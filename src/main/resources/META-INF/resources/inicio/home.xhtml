@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+
+    <h:head>
+        <title>SorteadorEducadora - Home</title>
+
+        <!-- FavIcon e Import CSS -->
+        <link rel="shortcut icon" type="image/x-icon"
+              href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
+        <h:outputStylesheet name="/rsc/css/estilo.css"/>
+
+        <!-- Escala em dispositivos moveis -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <!--Incluir menu-->
+            <ui:include src="/rsc/templates/menu.xhtml"/>
+
+            <p:panel header="Últimos Ganhadores">
+                <p:dataTable id="dataTable" value="#{homeController.resultadoSorteioList}"
+                             var="resultadoSorteio" showGridlines="true"
+                             paginator="true" rows="5"
+                             reflow="true">
+
+                    <p:column headerText="Ganhador" style="text-align: center;">
+                        <p:outputLabel value="#{resultadoSorteio.ouvinte.pessoa.nome}"
+                                       style="font-weight: bold"/>
+                    </p:column>
+
+                    <p:column headerText="Brinde" style="text-align: center;">
+                        #{resultadoSorteio.sorteio.brinde.descricao}
+                    </p:column>
+
+                    <p:column headerText="Empresa" style="text-align: center;">
+                        #{resultadoSorteio.sorteio.brinde.empresaAssociada.nome}
+                    </p:column>
+
+                    <p:column headerText="Programa" style="text-align: center;">
+                        #{resultadoSorteio.sorteio.programa.nome}
+                    </p:column>
+
+                    <p:column headerText="Usuário Realizador" style="text-align: center;">
+                        #{resultadoSorteio.sorteio.usuario.pessoa.nome}
+                    </p:column>
+
+                    <p:column headerText="Data/Hora" style="text-align: center;">
+                        <h:outputText value="#{resultadoSorteio.dataHora}">
+                            <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <!-- Incluir rodapé -->
+            <ui:include src="/rsc/templates/rodape.xhtml"/>
+        </h:form>
+    </h:body>
+</f:view>
+</html>
