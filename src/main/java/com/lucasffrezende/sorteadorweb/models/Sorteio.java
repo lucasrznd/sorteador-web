@@ -26,13 +26,13 @@ public class Sorteio extends GenericDomain {
     private Usuario usuario;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tb_participacao",
-            joinColumns = @JoinColumn(name = "sorteio_codigo"),
-            inverseJoinColumns = @JoinColumn(name = "ouvinte_codigo"))
+    @JoinTable(name = "tb_participacao", joinColumns = {@JoinColumn(name = "sorteio_codigo")},
+            inverseJoinColumns = {@JoinColumn(name = "ouvinte_codigo")})
     private Set<Ouvinte> ouvinteSet = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     private ResultadoSorteio resultado;
+
+    private Boolean ativo;
 
 }

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+
+    <h:head>
+        <title>SorteadorEducadora - Buscar Resultado</title>
+
+        <!-- FavIcon e Import CSS -->
+        <link rel="shortcut icon" type="image/x-icon"
+              href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
+        <h:outputStylesheet name="/rsc/css/estilo.css"/>
+        <h:outputScript name="primefaces/locales/locale-pt.js"/>
+
+        <!-- Escala em dispositivos moveis -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    </h:head>
+
+    <h:body>
+        <h:form id="formPrincipal">
+            <!--Incluir menu-->
+            <ui:include src="/rsc/templates/menu.xhtml"/>
+
+            <p:panel>
+                <h2>Buscar Resultado</h2>
+                <p:messages id="messages" closable="true"/>
+            </p:panel>
+
+            <p:panel>
+                <h:panelGrid id="panelGridButton" style="width: 100%" columns="5">
+                    <p:row>
+                        <p:button value="Novo Sorteio" icon="pi pi-gift"
+                                  outcome="/cadastro/sorteio.xhtml"
+                                  styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
+
+                        <i class="pi pi-ellipsis-v mr-2"/>
+
+                        <p:commandButton value="Buscar" icon="pi pi-search"
+                                         actionListener="#{buscaResultadoSorteio.buscar()}"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="messages gridPrincipal dataTable"
+                                         style="margin-left: 6px"/>
+                    </p:row>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel>
+                <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column styleClass="column-large-screen">
+                            <p:outputLabel for="programa" value="Programa:"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="programa"
+                                             value="#{buscaResultadoSorteio.resultadoSorteio.sorteio.programa}"
+                                             converter="omnifaces.SelectItemsConverter"
+                                             styleClass="ui-selectonemenu">
+                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
+                                <f:selectItems value="#{buscaResultadoSorteio.programaList}" var="programa"
+                                               itemValue="#{programa}" itemLabel="#{programa.nome}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="dataCadastro" value="Data de Cadastro:"/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="dataCadastro" locale="pt" pattern="dd/MM/yyyy" readonlyInput="true"
+                                        value="#{buscaSorteioController.sorteio.dataHora}"
+                                        showOn="button"
+                                        navigator="true"
+                                        styleClass="ui-calendar"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="brinde" value="Brinde:"/>
+                        </p:column>
+                        <p:column>
+                            <p:autoComplete id="brinde"
+                                            value="#{buscaResultadoSorteio.resultadoSorteio.sorteio.brinde}"
+                                            completeMethod="#{buscaResultadoSorteio.buscarBrinde}"
+                                            var="brinde"
+                                            itemLabel="#{brinde.descricao}" itemValue="#{brinde}"
+                                            converter="#{brindeConverter}" forceSelection="true"
+                                            style="text-transform: uppercase;"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="ganhador" value="Ganhador:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="ganhador"
+                                         value="#{buscaResultadoSorteio.resultadoSorteio.ouvinte.pessoa.nome}"
+                                         maxlength="100"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+
+            <p:panel>
+                <p:dataTable id="dataTable" value="#{buscaResultadoSorteio.resultadoSorteioList}"
+                             var="resultadoSorteio" showGridlines="true"
+                             paginator="true" rows="5"
+                             reflow="true">
+
+                    <p:column headerText="Código" style="text-align: center;">
+                        #{resultadoSorteio.codigo}
+                    </p:column>
+
+                    <p:column headerText="Ganhador" style="text-align: center;">
+                        #{resultadoSorteio.ouvinte.pessoa.nome}
+                    </p:column>
+
+                    <p:column headerText="Brinde" style="text-align: center;">
+                        #{resultadoSorteio.sorteio.brinde.descricao}
+                    </p:column>
+
+                    <p:column headerText="Empresa" style="text-align: center;">
+                        #{resultadoSorteio.sorteio.brinde.empresaAssociada.nome}
+                    </p:column>
+
+                    <p:column headerText="Programa" style="text-align: center;">
+                        #{resultadoSorteio.sorteio.programa.nome}
+                    </p:column>
+
+                    <p:column headerText="Usuário Realizador" style="text-align: center;">
+                        #{resultadoSorteio.sorteio.usuario.pessoa.nome}
+                    </p:column>
+
+                    <p:column headerText="Data/Hora" style="text-align: center;">
+                        <h:outputText value="#{resultadoSorteio.dataHora}">
+                            <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Editar/Excluir" style="text-align: center;">
+                        <!-- Inicio código para botão Editar -->
+                        <p:commandButton icon="pi pi-pencil"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         process="@this">
+                            <f:setPropertyActionListener value="#{resultadoSorteio}"
+                                                         target="#{buscaResultadoSorteio.resultadoSorteio}"/>
+                        </p:commandButton>
+                        <!-- Fim código para botão Editar -->
+
+                        <i class="pi pi-ellipsis-v mr-2"/>
+
+                        <!-- Inicio código para botão delete -->
+                        <p:commandButton action="#{buscaResultadoSorteio.delete()}"
+                                         icon="pi pi-trash"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat">
+                            <p:confirm header="Confirmação" message="Deseja remover este registro?"
+                                       icon="pi pi-info-circle"/>
+                            <f:setPropertyActionListener
+                                    target="#{buscaResultadoSorteio.resultadoSorteio}"
+                                    value="#{resultadoSorteio}"/>
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true"
+                                         width="350">
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                             process="@this"/>
+                        </p:confirmDialog>
+                        <!-- Fim código para botão delete -->
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+        <!-- Incluir rodapé -->
+        <ui:include src="/rsc/templates/rodape.xhtml"/>
+    </h:body>
+</f:view>
+</html>

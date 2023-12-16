@@ -15,6 +15,7 @@
         <link rel="shortcut icon" type="image/x-icon"
               href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
         <h:outputStylesheet name="/rsc/css/estilo.css"/>
+        <h:outputScript name="rsc/js/sorteio.js"/>
 
         <!-- Escala em dispositivos moveis -->
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
@@ -64,9 +65,12 @@
                                         rendered="#{novoSorteioController.sorteio.codigo != null}"/>
 
                         <p:commandButton value="Sortear" icon="pi pi-gift"
+                                         actionListener="#{novoSorteioController.sortear()}"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                          update="messages gridPrincipal gridSecundario ouvintePick"
                                          rendered="#{novoSorteioController.sorteio.codigo != null}"
+                                         onstart="PF('modalSorteio').show()"
+                                         oncomplete="agendarFechamentoModalSorteio();"
                                          style="margin-left: 10px"/>
 
                         <p:button value="Buscar" icon="pi pi-search"
@@ -143,10 +147,10 @@
                                         showTargetControls="true" showCheckbox="true"
                                         showSourceFilter="true" showTargetFilter="true"
                                         sourceFilterPlaceholder="Selecione os nomes desejados"
-                                        targetFilterPlaceholder="Participantes"
+                                        targetFilterPlaceholder="Participantes atuais"
                                         filterMatchMode="contains"
                                         required="true"
-                                        requiredMessage="Ouvinte é obrigatório."
+                                        requiredMessage="Selecione os ouvintes."
                                         converter="#{ouvinteConverter}" responsive="true">
 
                                 <f:facet name="sourceCaption">Todos</f:facet>
@@ -262,6 +266,105 @@
             </h:form>
         </p:dialog>
         <!-- Fim do Modal -->
+
+        <!-- Inicio Modal de sorteio -->
+        <p:dialog id="modalSorteio" widgetVar="modalSorteio" height="80%" width="70%"
+                  header="Processando"
+                  modal="true" closable="false"
+                  appendTo="@(body)" dynamic="true"
+                  resizable="false"
+                  maximizable="true"
+                  draggable="false"
+                  responsive="true"
+                  position="center">
+
+            <p:panel>
+                <p:graphicImage library="imgs" name="loading-sorteio.gif"
+                                style="width: 50%; display: block; margin: 0 auto;"/>
+            </p:panel>
+
+            <p:panel>
+                <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel value="Realizando sorteio, aguarde..."
+                                           style="font-weight: bold"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+
+
+        </p:dialog>
+        <!-- Fim do modal de sorteio -->
+
+        <p:dialog id="modalGanhador" widgetVar="modalGanhador" height="80%" width="70%"
+                  modal="true" header="Ganhador do Sorteio" closable="true"
+                  appendTo="@(body)" dynamic="true"
+                  onHide="PF('modalDois').hide()"
+                  resizable="false"
+                  draggable="false"
+                  responsive="true"
+                  position="center">
+            <h:form>
+                <p:panel>
+                    <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="brindeGanhador" value="Brinde:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="brindeGanhador"
+                                               value="#{novoSorteioController.brindeDoGanhador()}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="nomeGanhador" value="Ganhador:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="nomeGanhador"
+                                               value="#{novoSorteioController.sorteio.resultado.ouvinte.pessoa.nome}"
+                                               style="font-weight: bold"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="telefoneGanhador" value="Telefone:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="telefoneGanhador"
+                                               value="#{novoSorteioController.sorteio.resultado.ouvinte.pessoa.telefone}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="dataHoraGanhador" value="Data:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="dataHoraGanhador"
+                                               value="#{novoSorteioController.sorteio.resultado.dataHora}">
+                                    <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="usuarioRealizador" value="Usuário Realizador:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="usuarioRealizador"
+                                               value="#{novoSorteioController.sorteio.usuario.pessoa.nome}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:dialog>
 
         <!-- Incluir rodapé -->
         <ui:include src="/rsc/templates/rodape.xhtml"/>

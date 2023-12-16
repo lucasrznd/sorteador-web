@@ -56,7 +56,7 @@ public class BuscaSorteioController implements Serializable {
     }
 
     public void buscar() {
-        sorteioList = sorteioService.buscaDinamica(sorteio);
+        sorteioList = sorteioService.buscaDinamicaAtivo(sorteio);
 
         ListaUtil.verificaTamanhoLista(sorteioList);
     }

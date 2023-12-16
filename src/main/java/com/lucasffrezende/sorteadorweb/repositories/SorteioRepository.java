@@ -60,6 +60,42 @@ public class SorteioRepository {
         return em.createQuery(criteriaQuery).getResultList();
     }
 
+    @Transactional
+    public List<Sorteio> buscaDinamicaSorteioAtivo(Sorteio sorteio) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Sorteio> criteriaQuery = criteriaBuilder.createQuery(Sorteio.class);
+        Root<Sorteio> root = criteriaQuery.from(Sorteio.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (sorteio.getPrograma() != null) {
+            Join<Sorteio, Programa> programaJoin = root.join("programa");
+
+            if (sorteio.getPrograma().getNome() != null && !sorteio.getPrograma().getNome().isBlank()) {
+                predicates.add(criteriaBuilder.equal(programaJoin.get("nome"), sorteio.getPrograma().getNome()));
+            }
+        }
+
+        if (sorteio.getDataHora() != null) {
+            Expression<LocalDate> dateFunction = criteriaBuilder.function("DATE", LocalDate.class, root.get("dataHora"));
+            predicates.add(criteriaBuilder.equal(dateFunction, sorteio.getDataHora()));
+        }
+
+        if (sorteio.getBrinde() != null) {
+            Join<Sorteio, Brinde> brindeJoin = root.join("brinde");
+
+            if (sorteio.getBrinde().getDescricao() != null && !sorteio.getBrinde().getDescricao().isBlank()) {
+                predicates.add(criteriaBuilder.equal(brindeJoin.get("descricao"), sorteio.getBrinde().getDescricao()));
+            }
+        }
+
+        predicates.add(criteriaBuilder.isTrue(root.get("ativo")));
+
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+
+        return em.createQuery(criteriaQuery).getResultList();
+    }
+
     public Sorteio buscaPorCodigo(Long codigo) {
         Sorteio sorteio = em.find(Sorteio.class, codigo);
         return sorteio;

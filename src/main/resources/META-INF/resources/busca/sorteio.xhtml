@@ -45,6 +45,11 @@
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                          update="messages gridPrincipal dataTable"
                                          style="margin-left: 6px"/>
+
+                        <p:button value="Resultados" icon="pi pi-search"
+                                  outcome="/busca/resultado.xhtml"
+                                  styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                  style="float: right"/>
                     </p:row>
                 </h:panelGrid>
             </p:panel>
@@ -119,11 +124,11 @@
                         #{sorteio.programa.nome}
                     </p:column>
 
-                    <p:column headerText="Usuário" style="text-align: center;">
+                    <p:column headerText="Criado por" style="text-align: center;">
                         #{sorteio.usuario.pessoa.nome}
                     </p:column>
 
-                    <p:column headerText="Data/Hora" style="text-align: center;">
+                    <p:column headerText="Data de Cadastro" style="text-align: center;">
                         <h:outputText value="#{sorteio.dataHora}">
                             <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
                         </h:outputText>

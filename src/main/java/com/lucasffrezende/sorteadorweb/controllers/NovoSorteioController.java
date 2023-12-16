@@ -5,7 +5,6 @@ import com.lucasffrezende.sorteadorweb.services.*;
 import com.lucasffrezende.sorteadorweb.utils.GrowlView;
 import com.lucasffrezende.sorteadorweb.utils.ListaUtil;
 import jakarta.annotation.PostConstruct;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
 import org.omnifaces.util.Messages;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.*;
@@ -49,6 +49,9 @@ public class NovoSorteioController implements Serializable {
     private List<Ouvinte> ouvintesSelecionados;
     private DualListModel ouvintesModel;
 
+    @Autowired
+    private ResultadoSorteioService resultadoSorteioService;
+
     @PostConstruct
     public void init() {
         sorteio = new Sorteio();
@@ -57,6 +60,7 @@ public class NovoSorteioController implements Serializable {
         sorteio.setUsuario(new Usuario());
         sorteio.setOuvinteSet(new HashSet<>());
         sorteio.setResultado(new ResultadoSorteio());
+        sorteio.getBrinde().setTipoBrinde(new TipoBrinde());
 
         sorteioList = new ArrayList<>();
         programaList = programaService.listar();
@@ -69,16 +73,20 @@ public class NovoSorteioController implements Serializable {
         ouvintesSelecionados = ouvintesModel.getTarget();
         Set<Ouvinte> ouvinteSet = new HashSet<>(ouvintesSelecionados);
 
+        sorteio.setDataHora(LocalDateTime.now());
         sorteio.setOuvinteSet(ouvinteSet);
+        sorteio.getResultado().setSorteio(sorteio);
         sorteioService.salvar(sorteio);
 
         Messages.addGlobalInfo(MSG_SALVO_SUCESSO.getMsg());
     }
 
     public void buscar() {
-        sorteioList = sorteioService.buscaDinamica(sorteio);
+        sorteioList = sorteioService.buscaDinamicaAtivo(sorteio);
 
-        ListaUtil.verificaTamanhoLista(sorteioList);
+        if (sorteioList.isEmpty()) {
+            GrowlView.showWarn("Falha", MSG_NENHUM_REGISTRO.getMsg());
+        }
     }
 
     public void importar(Sorteio sorteioSelecionado) {
@@ -86,6 +94,7 @@ public class NovoSorteioController implements Serializable {
 
         List<Object> participantes = new ArrayList<>();
 
+        // Se o ouvinte já estava participando, remove o nome dele na lista de disponiveis
         ouvintesModel.setTarget(Arrays.asList(sorteio.getOuvinteSet().toArray()));
         for (Object participante : ouvintesModel.getTarget()) {
             for (Object ouvinte : ouvintesModel.getSource()) {
@@ -99,11 +108,25 @@ public class NovoSorteioController implements Serializable {
         GrowlView.showInfo("Sucesso", MSG_IMPORT_SUCESSO.getMsg());
     }
 
+    public void sortear() {
+        // Realiza o sorteio
+        Ouvinte ouvinte = sorteioService.sortear(ouvintesModel.getTarget());
+
+        ResultadoSorteio resultadoSorteio = resultadoSorteioService.buscaPorSorteio(this.sorteio);
+        resultadoSorteio.setDataHora(LocalDateTime.now());
+        resultadoSorteio.setOuvinte(ouvinte);
+        resultadoSorteio.getSorteio().setAtivo(false);
+
+        resultadoSorteioService.salvar(resultadoSorteio);
+
+        sorteio.setResultado(resultadoSorteio);
+    }
+
     public List<Usuario> buscarUsuario(String nome) {
         usuarioList = usuarioService.buscaPorNomeUsuario(nome);
 
         if (usuarioList == null) {
-            GrowlView.showInfo("Falha", MSG_NENHUM_REGISTRO.getMsg());
+            Messages.addFlashGlobalWarn(MSG_NENHUM_REGISTRO.getMsg());
         }
         return usuarioList;
     }
@@ -115,6 +138,10 @@ public class NovoSorteioController implements Serializable {
             Messages.addFlashGlobalWarn(MSG_NENHUM_REGISTRO.getMsg());
         }
         return brindeList;
+    }
+
+    public String brindeDoGanhador() {
+        return sorteio.getBrinde().getTipoBrinde().getTipo() + " | " + sorteio.getBrinde().getDescricao();
     }
 
 }
