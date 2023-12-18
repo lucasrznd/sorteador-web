@@ -23,8 +23,12 @@ public class SorteioService {
         return sorteioRepository.buscaDinamica(sorteio);
     }
 
-    public List<Sorteio> buscaDinamicaAtivo(Sorteio sorteio) {
+    public List<Sorteio> buscaDinamicaSorteioAtivo(Sorteio sorteio) {
         return sorteioRepository.buscaDinamicaSorteioAtivo(sorteio);
+    }
+
+    public List<Sorteio> buscaDinamicaSorteioParticipantes(Sorteio sorteio) {
+        return sorteioRepository.buscaDinamicaSorteioParticipantes(sorteio);
     }
 
     public Sorteio buscaPorCodigo(Long codigo) {

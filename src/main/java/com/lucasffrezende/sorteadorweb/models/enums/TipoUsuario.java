@@ -6,8 +6,9 @@ import lombok.Setter;
 public enum TipoUsuario {
 
     ADMIN("Administrador"),
+    TECNICO("Técnico"),
     LOCUTOR("Locutor"),
-    TECNICO("Técnico");
+    COLABORADOR("Colaborador");
 
     @Getter @Setter
     private String descricao;

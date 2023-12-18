@@ -3,7 +3,6 @@ package com.lucasffrezende.sorteadorweb.controllers;
 import com.lucasffrezende.sorteadorweb.models.*;
 import com.lucasffrezende.sorteadorweb.services.*;
 import com.lucasffrezende.sorteadorweb.utils.GrowlView;
-import com.lucasffrezende.sorteadorweb.utils.ListaUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
@@ -52,6 +51,8 @@ public class NovoSorteioController implements Serializable {
     @Autowired
     private ResultadoSorteioService resultadoSorteioService;
 
+    private String tipoImportacao;
+
     @PostConstruct
     public void init() {
         sorteio = new Sorteio();
@@ -67,6 +68,7 @@ public class NovoSorteioController implements Serializable {
         ouvintesDisponiveis = ouvinteService.listar();
         ouvintesSelecionados = new ArrayList<>();
         ouvintesModel = new DualListModel(ouvintesDisponiveis, ouvintesSelecionados);
+        tipoImportacao = "Sorteio";
     }
 
     public void salvar() {
@@ -82,8 +84,11 @@ public class NovoSorteioController implements Serializable {
     }
 
     public void buscar() {
-        sorteioList = sorteioService.buscaDinamicaAtivo(sorteio);
-
+        if (tipoImportacao.equals("Participantes")) {
+            sorteioList = sorteioService.buscaDinamicaSorteioParticipantes(sorteio);
+        } else {
+            sorteioList = sorteioService.buscaDinamicaSorteioAtivo(sorteio);
+        }
         if (sorteioList.isEmpty()) {
             GrowlView.showWarn("Falha", MSG_NENHUM_REGISTRO.getMsg());
         }
@@ -105,6 +110,16 @@ public class NovoSorteioController implements Serializable {
         }
 
         ouvintesModel.getSource().removeAll(participantes);
+
+        if (tipoImportacao.equals("Participantes")) {
+            sorteio = new Sorteio();
+            sorteio.setPrograma(new Programa());
+            sorteio.setBrinde(new Brinde());
+            sorteio.setUsuario(new Usuario());
+            sorteio.setOuvinteSet(new HashSet<>());
+            sorteio.setResultado(new ResultadoSorteio());
+            sorteio.getBrinde().setTipoBrinde(new TipoBrinde());
+        }
         GrowlView.showInfo("Sucesso", MSG_IMPORT_SUCESSO.getMsg());
     }
 

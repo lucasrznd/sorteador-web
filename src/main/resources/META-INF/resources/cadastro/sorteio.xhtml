@@ -162,7 +162,7 @@
             </p:panel>
         </h:form>
 
-        <!-- Inicio do Modal -->
+        <!-- Inicio do Modal de Importar -->
         <p:dialog modal="true"
                   header="Importar Dados" height="80%" width="90%" widgetVar="modal"
                   maximizable="true"
@@ -176,6 +176,18 @@
                     <p:panelGrid style="width: 100%" layout="tabular" columns="0">
                         <p:row style="text-align: center">
                             <p:column styleClass="column-large-screen">
+                                <p:outputLabel value="Importar:"/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneRadio id="line" value="#{novoSorteioController.tipoImportacao}"
+                                                  layout="lineDirection">
+                                    <f:selectItem itemLabel="Sorteio" itemValue="Sorteio"/>
+                                    <f:selectItem itemLabel="Participantes" itemValue="Participantes"/>
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row style="text-align: center">
+                            <p:column>
                                 <p:outputLabel for="programaModal" value="Programa:"/>
                             </p:column>
                             <p:column>
@@ -265,7 +277,7 @@
                 </p:panel>
             </h:form>
         </p:dialog>
-        <!-- Fim do Modal -->
+        <!-- Fim do Modal de Importar -->
 
         <!-- Inicio Modal de sorteio -->
         <p:dialog id="modalSorteio" widgetVar="modalSorteio" height="80%" width="70%"
