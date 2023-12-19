@@ -1,0 +1,8 @@
+body {
+    background-image: url("#{resource['/imgs/background-login.png']}");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Isso garante que a imagem de fundo ocupe toda a altura da tela */
+    margin: 0; /* Remove margens padrão do corpo */
+}

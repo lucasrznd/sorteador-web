@@ -103,24 +103,6 @@
 
                     <p:row style="text-align: center">
                         <p:column>
-                            <p:outputLabel for="usuario" value="Usuário:"/>
-                        </p:column>
-                        <p:column>
-                            <p:autoComplete id="usuario"
-                                            value="#{novoSorteioController.sorteio.usuario}"
-                                            completeMethod="#{novoSorteioController.buscarUsuario}"
-                                            var="usuario"
-                                            required="true"
-                                            requiredMessage="Usuário é obrigatório."
-                                            itemLabel="#{usuario.pessoa.nome}" itemValue="#{usuario}"
-                                            converter="#{usuarioConverter}" forceSelection="true"
-                                            style="text-transform: uppercase;"
-                            />
-                        </p:column>
-                    </p:row>
-
-                    <p:row style="text-align: center">
-                        <p:column>
                             <p:outputLabel for="brinde" value="Brinde:"/>
                         </p:column>
                         <p:column>
@@ -305,11 +287,10 @@
                     </p:row>
                 </p:panelGrid>
             </p:panel>
-
-
         </p:dialog>
         <!-- Fim do modal de sorteio -->
 
+        <!-- Inicio Modal de ganhador -->
         <p:dialog id="modalGanhador" widgetVar="modalGanhador" height="80%" width="70%"
                   modal="true" header="Ganhador do Sorteio" closable="true"
                   appendTo="@(body)" dynamic="true"
@@ -374,9 +355,20 @@
                             </p:column>
                         </p:row>
                     </p:panelGrid>
+
+                    <p:panelGrid style="width: 100%; margin-top: 10px" layout="tabular" columns="0">
+                        <p:row style="text-align: center;">
+                            <p:column>
+                                <p:button value="Enviar no Whatsapp" icon="pi pi-whatsapp"
+                                          onclick="redirectToWhatsApp('#{novoSorteioController.sorteio.resultado.ouvinte.pessoa.telefone}', '#{novoSorteioController.mensagemGanhador}');"
+                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
                 </p:panel>
             </h:form>
         </p:dialog>
+        <!-- Fim Modal de ganhador -->
 
         <!-- Incluir rodapé -->
         <ui:include src="/rsc/templates/rodape.xhtml"/>

@@ -25,6 +25,10 @@
             <!--Incluir menu-->
             <ui:include src="/rsc/templates/menu.xhtml"/>
 
+            <p:panel>
+                <h3>OLÁ, #{loginController.usuarioFormatado()} </h3>
+            </p:panel>
+
             <p:panel header="Últimos Ganhadores">
                 <p:dataTable id="dataTable" value="#{homeController.resultadoSorteioList}"
                              var="resultadoSorteio" showGridlines="true"

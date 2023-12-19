@@ -20,7 +20,8 @@ public class ResultadoSorteioRepository {
     private EntityManager em;
 
     public List<ResultadoSorteio> listar() {
-        Query query = em.createQuery("SELECT rs FROM ResultadoSorteio rs ORDER BY rs.codigo DESC");
+        Query query = em.createQuery("SELECT rs FROM ResultadoSorteio rs WHERE rs.ouvinte IS NOT NULL ORDER BY rs.codigo DESC");
+        query.setMaxResults(15);
         List<ResultadoSorteio> resultadoSorteioList = query.getResultList();
         return resultadoSorteioList;
     }

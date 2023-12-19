@@ -12,19 +12,24 @@
             <p:graphicImage library="imgs" name="logo.png" style="width: 157px; height: 59px"/>
         </p:menuitem>
 
-        <p:submenu label="Cadastro">
+        <p:submenu label="Cadastro" icon="pi pi-plus-circle">
             <p:menuitem value="Ouvinte"        outcome="/cadastro/ouvinte.xhtml"/>
             <p:menuitem value="Brinde"         outcome="/cadastro/brinde.xhtml"/>
             <p:menuitem value="Empresa"        outcome="/cadastro/empresa.xhtml"/>
             <p:menuitem value="Programa"       outcome="/cadastro/programa.xhtml"/>
-            <p:menuitem value="Usuário"        outcome="/cadastro/usuario.xhtml"/>
+            <p:menuitem value="Usuário"        outcome="/cadastro/usuario.xhtml"
+            rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"/>
         </p:submenu>
 
-        <p:submenu label="Sorteio">
-            <p:menuitem value="Novo"           outcome="/cadastro/sorteio.xhtml"/>
-            <p:menuitem value="Resultados"      outcome="/busca/resultado.xhtml"/>
+        <p:submenu label="Sorteio" icon="pi pi-gift">
+            <p:menuitem value="Novo"           outcome="/cadastro/sorteio.xhtml"
+                        icon="pi pi-plus" />
+            <p:menuitem value="Resultados"     outcome="/busca/resultado.xhtml"
+                        icon="pi pi-chart-bar"/>
         </p:submenu>
 
+        <p:menuitem value="Sair" action="#{loginController.logout()}"
+                    icon="pi pi-fw pi-power-off"/>
     </p:menubar>
 </h:body>
 

@@ -3,6 +3,7 @@ package com.lucasffrezende.sorteadorweb.controllers;
 import com.lucasffrezende.sorteadorweb.models.*;
 import com.lucasffrezende.sorteadorweb.services.*;
 import com.lucasffrezende.sorteadorweb.utils.GrowlView;
+import com.lucasffrezende.sorteadorweb.utils.StringUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
@@ -51,7 +52,11 @@ public class NovoSorteioController implements Serializable {
     @Autowired
     private ResultadoSorteioService resultadoSorteioService;
 
+    @Autowired
+    private LoginService loginService;
+
     private String tipoImportacao;
+    private String mensagemGanhador;
 
     @PostConstruct
     public void init() {
@@ -72,12 +77,17 @@ public class NovoSorteioController implements Serializable {
     }
 
     public void salvar() {
+        // Obter usuario logado
+        LoginController loginController = LoginController.getInstance();
+        Usuario usuarioLogado = loginService.obterUsuario(loginController.getUsuarioLogado());
+
         ouvintesSelecionados = ouvintesModel.getTarget();
         Set<Ouvinte> ouvinteSet = new HashSet<>(ouvintesSelecionados);
 
         sorteio.setDataHora(LocalDateTime.now());
         sorteio.setOuvinteSet(ouvinteSet);
         sorteio.getResultado().setSorteio(sorteio);
+        sorteio.setUsuario(usuarioLogado);
         sorteioService.salvar(sorteio);
 
         Messages.addGlobalInfo(MSG_SALVO_SUCESSO.getMsg());
@@ -135,6 +145,7 @@ public class NovoSorteioController implements Serializable {
         resultadoSorteioService.salvar(resultadoSorteio);
 
         sorteio.setResultado(resultadoSorteio);
+        this.mensagemGanhador = StringUtil.mensagemGanhador(sorteio);
     }
 
     public List<Usuario> buscarUsuario(String nome) {
