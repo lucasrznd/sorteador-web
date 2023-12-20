@@ -4,8 +4,10 @@ import com.lucasffrezende.sorteadorweb.models.*;
 import com.lucasffrezende.sorteadorweb.services.BrindeService;
 import com.lucasffrezende.sorteadorweb.services.ProgramaService;
 import com.lucasffrezende.sorteadorweb.services.ResultadoSorteioService;
+import com.lucasffrezende.sorteadorweb.services.UsuarioProgramaService;
 import com.lucasffrezende.sorteadorweb.utils.GrowlView;
 import com.lucasffrezende.sorteadorweb.utils.ListaUtil;
+import com.lucasffrezende.sorteadorweb.utils.StringUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
@@ -23,7 +25,7 @@ import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.MSG_NENHUM_REGI
 @Component
 @ViewScoped
 @Data
-public class BuscaResultadoSorteio implements Serializable {
+public class BuscaResultadoSorteioController implements Serializable {
 
     @Autowired
     private ResultadoSorteioService resultadoSorteioService;
@@ -39,6 +41,11 @@ public class BuscaResultadoSorteio implements Serializable {
     @Autowired
     private BrindeService brindeService;
     private List<Brinde> brindeList;
+
+    @Autowired
+    private UsuarioProgramaService usuarioProgramaService;
+
+    private String mensagemGanhador;
 
     @PostConstruct
     public void init() {
@@ -65,6 +72,12 @@ public class BuscaResultadoSorteio implements Serializable {
             Messages.addFlashGlobalWarn(MSG_NENHUM_REGISTRO.getMsg());
         }
         return brindeList;
+    }
+
+    public String gerarMensagemGanhador(ResultadoSorteio resultadoSorteio) {
+        UsuarioPrograma usuarioPrograma = usuarioProgramaService.buscaPorPrograma(resultadoSorteio.getSorteio().getPrograma());
+        this.mensagemGanhador = StringUtil.mensagemGanhador(resultadoSorteio.getSorteio(), usuarioPrograma);
+        return mensagemGanhador;
     }
 
     public void delete() {

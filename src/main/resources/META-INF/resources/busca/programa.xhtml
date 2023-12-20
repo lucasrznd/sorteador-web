@@ -177,6 +177,16 @@
                                             requiredMessage="Locutor é obrigatório."/>
                         </p:column>
                     </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="ativoModal" value="Ativo:"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox id="ativoModal" styleClass="custom-checkbox"
+                                                     value="#{buscaProgramaController.usuarioPrograma.programa.ativo}"/>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
 
                 <div style="display: flex; justify-content: center">

@@ -64,7 +64,7 @@ public class BuscaProgramaController implements Serializable {
     }
 
     public void editar() {
-        usuarioProgramaService.salvar(usuarioPrograma);
+        usuarioProgramaService.editar(usuarioPrograma);
 
         GrowlView.showInfo("Sucesso", MSG_SALVO_SUCESSO.getMsg());
     }

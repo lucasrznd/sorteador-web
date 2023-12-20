@@ -19,7 +19,7 @@
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     </h:head>
     <h:body>
-        <p:dialog modal="true" header="Login" height="50%" width="30%"
+        <p:dialog modal="true" header="Login"
                   closable="false"
                   draggable="false"
                   resizable="false"
@@ -29,9 +29,10 @@
                     <p:autoUpdate on="true"/>
                 </p:messages>
 
-                <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                <p:panelGrid id="panelGridCampos" style="width: 100%" layout="tabular" columns="0">
                     <p:row style="text-align: center">
                         <p:column styleClass="column-large-screen">
+                            <i class="pi pi-user" style="margin-right: 5px"/>
                             <p:outputLabel for="usuario" value="Usuário:"/>
                         </p:column>
                         <p:column>
@@ -44,6 +45,7 @@
 
                     <p:row style="text-align: center">
                         <p:column>
+                            <i class="pi pi-lock" style="margin-right: 5px"/>
                             <p:outputLabel for="senha" value="Senha:"/>
                         </p:column>
                         <p:column>
@@ -56,13 +58,14 @@
                     </p:row>
                 </p:panelGrid>
 
-                <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                <p:panelGrid style="width: 100%; margin-top: 5px" layout="tabular" columns="0">
                     <p:row style="text-align: center">
-                        <p:column>
+                        <p:column styleClass="column-large-screen">
                             <p:commandButton value="Entrar"
                                              actionListener="#{loginController.autenticar()}"
                                              styleClass="ui-button-raised ui-button-secondary ui-button-flat"
-                                             update="message"/>
+                                             update="message panelGridCampos"
+                                             style="width: 50%"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>

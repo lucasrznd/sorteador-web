@@ -6,6 +6,7 @@ import com.lucasffrezende.sorteadorweb.models.Sorteio;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +71,10 @@ public class ResultadoSorteioRepository {
         criteriaQuery.where(predicates.toArray(new Predicate[0]));
         criteriaQuery.orderBy(criteriaBuilder.desc(root.get("codigo")));
 
-        return em.createQuery(criteriaQuery).getResultList();
+        // Definindo o limite de resultados para os últimos 25
+        TypedQuery<ResultadoSorteio> query = query = em.createQuery(criteriaQuery).setMaxResults(25);
+
+        return query.getResultList();
     }
 
     public ResultadoSorteio buscaPorSorteio(Sorteio sorteio) {

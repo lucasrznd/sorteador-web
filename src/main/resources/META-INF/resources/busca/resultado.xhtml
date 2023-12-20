@@ -16,6 +16,7 @@
               href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
         <h:outputStylesheet name="/rsc/css/estilo.css"/>
         <h:outputScript name="primefaces/locales/locale-pt.js"/>
+        <h:outputScript name="rsc/js/sorteio.js"/>
 
         <!-- Escala em dispositivos moveis -->
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
@@ -41,7 +42,7 @@
                         <i class="pi pi-ellipsis-v mr-2"/>
 
                         <p:commandButton value="Buscar" icon="pi pi-search"
-                                         actionListener="#{buscaResultadoSorteio.buscar()}"
+                                         actionListener="#{buscaResultadoSorteioController.buscar()}"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                          update="messages gridPrincipal dataTable"
                                          style="margin-left: 6px"/>
@@ -57,11 +58,11 @@
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="programa"
-                                             value="#{buscaResultadoSorteio.resultadoSorteio.sorteio.programa}"
+                                             value="#{buscaResultadoSorteioController.resultadoSorteio.sorteio.programa}"
                                              converter="omnifaces.SelectItemsConverter"
                                              styleClass="ui-selectonemenu">
                                 <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
-                                <f:selectItems value="#{buscaResultadoSorteio.programaList}" var="programa"
+                                <f:selectItems value="#{buscaResultadoSorteioController.programaList}" var="programa"
                                                itemValue="#{programa}" itemLabel="#{programa.nome}"/>
                             </p:selectOneMenu>
                         </p:column>
@@ -86,8 +87,8 @@
                         </p:column>
                         <p:column>
                             <p:autoComplete id="brinde"
-                                            value="#{buscaResultadoSorteio.resultadoSorteio.sorteio.brinde}"
-                                            completeMethod="#{buscaResultadoSorteio.buscarBrinde}"
+                                            value="#{buscaResultadoSorteioController.resultadoSorteio.sorteio.brinde}"
+                                            completeMethod="#{buscaResultadoSorteioController.buscarBrinde}"
                                             var="brinde"
                                             itemLabel="#{brinde.descricao}" itemValue="#{brinde}"
                                             converter="#{brindeConverter}" forceSelection="true"
@@ -101,7 +102,7 @@
                         </p:column>
                         <p:column>
                             <p:inputText id="ganhador"
-                                         value="#{buscaResultadoSorteio.resultadoSorteio.ouvinte.pessoa.nome}"
+                                         value="#{buscaResultadoSorteioController.resultadoSorteio.ouvinte.pessoa.nome}"
                                          maxlength="100"
                                          styleClass="input-text-responsive"/>
                         </p:column>
@@ -110,7 +111,7 @@
             </p:panel>
 
             <p:panel>
-                <p:dataTable id="dataTable" value="#{buscaResultadoSorteio.resultadoSorteioList}"
+                <p:dataTable id="dataTable" value="#{buscaResultadoSorteioController.resultadoSorteioList}"
                              var="resultadoSorteio" showGridlines="true"
                              paginator="true" rows="5"
                              reflow="true">
@@ -146,27 +147,34 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Editar/Excluir" style="text-align: center;">
+                    <p:column headerText="Enviar Mensagem" style="text-align: center">
+                        <p:button icon="pi pi-whatsapp"
+                                  onclick="redirectToWhatsApp('#{resultadoSorteio.ouvinte.pessoa.telefone}', '#{buscaResultadoSorteioController.gerarMensagemGanhador(resultadoSorteio)}');"
+                                  styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
+                    </p:column>
+
+                    <p:column headerText="Editar/Excluir" style="text-align: center;"
+                              rendered="#{loginController.temPermissao(['Administrador'])}">
                         <!-- Inicio código para botão Editar -->
                         <p:commandButton icon="pi pi-pencil"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"
                                          process="@this">
                             <f:setPropertyActionListener value="#{resultadoSorteio}"
-                                                         target="#{buscaResultadoSorteio.resultadoSorteio}"/>
+                                                         target="#{buscaResultadoSorteioController.resultadoSorteio}"/>
                         </p:commandButton>
                         <!-- Fim código para botão Editar -->
 
                         <i class="pi pi-ellipsis-v mr-2"/>
 
                         <!-- Inicio código para botão delete -->
-                        <p:commandButton action="#{buscaResultadoSorteio.delete()}"
+                        <p:commandButton action="#{buscaResultadoSorteioController.delete()}"
                                          update="dataTable :formPrincipal:messages"
                                          icon="pi pi-trash"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat">
                             <p:confirm header="Confirmação" message="Deseja remover este registro?"
                                        icon="pi pi-info-circle"/>
                             <f:setPropertyActionListener
-                                    target="#{buscaResultadoSorteio.resultadoSorteio}"
+                                    target="#{buscaResultadoSorteioController.resultadoSorteio}"
                                     value="#{resultadoSorteio}"/>
                         </p:commandButton>
 
