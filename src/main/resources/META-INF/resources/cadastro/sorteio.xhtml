@@ -222,7 +222,7 @@
                             #{sorteio.programa.nome}
                         </p:column>
 
-                        <p:column headerText="Usuário" style="text-align: center;">
+                        <p:column headerText="Criado por" style="text-align: center;">
                             #{sorteio.usuario.pessoa.nome}
                         </p:column>
 
@@ -233,7 +233,6 @@
                         </p:column>
 
                         <p:column headerText="Importar" style="text-align: center;">
-                            <!-- Inicio código para botão delete -->
                             <p:commandButton
                                     actionListener="#{novoSorteioController.importar(sorteio)}"
                                     icon="pi pi-upload"
@@ -243,7 +242,6 @@
                                     oncomplete="PF('modal').hide();"
                                     styleClass="ui-button-raised ui-button-secondary ui-button-flat">
                             </p:commandButton>
-                            <!-- Fim código para botão delete -->
                         </p:column>
                     </p:dataTable>
 

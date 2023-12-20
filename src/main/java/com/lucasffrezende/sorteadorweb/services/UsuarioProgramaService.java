@@ -1,5 +1,6 @@
 package com.lucasffrezende.sorteadorweb.services;
 
+import com.lucasffrezende.sorteadorweb.models.Programa;
 import com.lucasffrezende.sorteadorweb.models.UsuarioPrograma;
 import com.lucasffrezende.sorteadorweb.repositories.UsuarioProgramaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,10 @@ public class UsuarioProgramaService {
 
     @Autowired
     private UsuarioProgramaRepository usuarioProgramaRepository;
+
+    public UsuarioPrograma buscaPorPrograma(Programa programa) {
+        return usuarioProgramaRepository.buscaPorPrograma(programa);
+    }
 
     public List<UsuarioPrograma> buscaDinamica(UsuarioPrograma usuarioPrograma) {
         return usuarioProgramaRepository.buscaDinamica(usuarioPrograma);

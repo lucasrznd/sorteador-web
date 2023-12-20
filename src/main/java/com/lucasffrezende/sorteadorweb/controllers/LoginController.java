@@ -37,7 +37,7 @@ public class LoginController implements Serializable {
         usuarioLogado = loginService.autenticar(usuario.getLogin(), usuario.getSenha());
 
         if (usuarioLogado == null) {
-            Messages.addFlashGlobalError("Login ou Senha incorretos.");
+            Messages.addFlashGlobalError("Usuário ou Senha incorretos.");
             return;
         }
 

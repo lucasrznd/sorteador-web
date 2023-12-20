@@ -6,6 +6,7 @@ import com.lucasffrezende.sorteadorweb.models.Usuario;
 import com.lucasffrezende.sorteadorweb.models.UsuarioPrograma;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,13 @@ public class UsuarioProgramaRepository {
 
     @PersistenceContext
     private EntityManager em;
+
+    public UsuarioPrograma buscaPorPrograma(Programa programa) {
+        Query query = em.createQuery("SELECT up FROM UsuarioPrograma up WHERE up.programa = :programa");
+        query.setParameter("programa", programa);
+        UsuarioPrograma usuarioPrograma = (UsuarioPrograma) query.getSingleResult();
+        return usuarioPrograma;
+    }
 
     public List<UsuarioPrograma> buscaDinamica(UsuarioPrograma usuarioPrograma) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

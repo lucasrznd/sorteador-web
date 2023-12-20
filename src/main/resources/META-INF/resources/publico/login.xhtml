@@ -19,10 +19,12 @@
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     </h:head>
     <h:body>
-        <h:form>
-
-            <p:dialog header="Login" closable="false" draggable="false"
-                      resizable="false" modal="true" visible="true">
+        <p:dialog modal="true" header="Login" height="50%" width="30%"
+                  closable="false"
+                  draggable="false"
+                  resizable="false"
+                  visible="true">
+            <h:form>
                 <p:messages id="message" closable="true">
                     <p:autoUpdate on="true"/>
                 </p:messages>
@@ -45,7 +47,7 @@
                             <p:outputLabel for="senha" value="Senha:"/>
                         </p:column>
                         <p:column>
-                            <p:password id="senha" maxlength="10" required="true"
+                            <p:password id="senha" required="true"
                                         requiredMessage="Senha é obrigatória."
                                         value="#{loginController.usuario.senha}"
                                         styleClass="input-text-responsive"
@@ -64,9 +66,8 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-            </p:dialog>
-
-        </h:form>
+            </h:form>
+        </p:dialog>
     </h:body>
 </f:view>
 

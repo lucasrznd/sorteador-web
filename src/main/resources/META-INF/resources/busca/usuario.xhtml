@@ -176,6 +176,56 @@
                                          styleClass="input-text-responsive"/>
                         </p:column>
                     </p:row>
+
+                    <p:row style="text-align: center"
+                           rendered="#{loginController.temPermissao(['Administrador'])}">
+                        <p:column>
+                            <p:outputLabel for="loginModal" value="Login:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="loginModal" value="#{buscaUsuarioController.usuario.login}"
+                                         required="true"
+                                         requiredMessage="Login é obrigatório."
+                                         maxlength="20"
+                                         styleClass="input-text-responsive"
+                                         readonly="true"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center"
+                           rendered="#{loginController.temPermissao(['Administrador'])}">
+                        <p:column>
+                            <p:outputLabel for="senhaModal" value="Senha:"/>
+                        </p:column>
+                        <p:column>
+                            <p:password id="senhaModal" value="#{buscaUsuarioController.usuario.senha}"
+                                        feedback="true"
+                                        promptLabel="Digite a sua senha" weakLabel="Fraca"
+                                        goodLabel="Boa" strongLabel="Forte"
+                                        toggleMask="true"
+                                        redisplay="true"
+                                        required="true"
+                                        requiredMessage="Senha é obrigatório."/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center"
+                           rendered="#{loginController.temPermissao(['Administrador'])}">
+                        <p:column>
+                            <p:outputLabel for="tipoUsuarioModal" value="Tipo de Usuário:"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="tipoUsuarioModal"
+                                             value="#{buscaUsuarioController.usuario.tipoUsuario}"
+                                             converter="omnifaces.SelectItemsConverter"
+                                             required="true"
+                                             requiredMessage="Tipo de Usuário é obrigatório."
+                                             styleClass="ui-selectonemenu">
+                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
+                                <f:selectItems value="#{tipoUsuarioController.tiposUsuarios}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
 
                 <h2>Endereço</h2>

@@ -128,13 +128,17 @@
                         </p:commandButton>
                         <!-- Fim código para botão Editar -->
 
-                        <i class="pi pi-ellipsis-v mr-2"/>
+                        <p:graphicImage library="imgs" name="ellipsis-v-icon.png"
+                                        style="margin-left: 5px;width: 3.5px;"
+                                        rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"/>
 
                         <!-- Inicio código para botão delete -->
                         <p:commandButton action="#{buscaBrindeController.delete()}"
                                          update="dataTable :formModal:growlMessage"
                                          icon="pi pi-trash"
-                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat">
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         style="margin-left: 5px"
+                                         rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}">
                             <p:confirm header="Confirmação" message="Deseja remover este registro?"
                                        icon="pi pi-info-circle"/>
                             <f:setPropertyActionListener

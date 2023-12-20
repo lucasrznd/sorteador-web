@@ -13,12 +13,18 @@
         </p:menuitem>
 
         <p:submenu label="Cadastro" icon="pi pi-plus-circle">
-            <p:menuitem value="Ouvinte"        outcome="/cadastro/ouvinte.xhtml"/>
-            <p:menuitem value="Brinde"         outcome="/cadastro/brinde.xhtml"/>
-            <p:menuitem value="Empresa"        outcome="/cadastro/empresa.xhtml"/>
-            <p:menuitem value="Programa"       outcome="/cadastro/programa.xhtml"/>
+            <p:menuitem value="Ouvinte"        outcome="/cadastro/ouvinte.xhtml"
+                        icon="pi pi-user"/>
+            <p:menuitem value="Brinde"         outcome="/cadastro/brinde.xhtml"
+                        icon="pi pi-gift"/>
+            <p:menuitem value="Empresa"        outcome="/cadastro/empresa.xhtml"
+                        icon="pi pi-building"/>
+            <p:menuitem value="Programa"       outcome="/cadastro/programa.xhtml"
+                        rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"
+                        icon="pi pi-microphone"/>
             <p:menuitem value="Usuário"        outcome="/cadastro/usuario.xhtml"
-            rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"/>
+            rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"
+                        icon="pi pi-user-plus"/>
         </p:submenu>
 
         <p:submenu label="Sorteio" icon="pi pi-gift">

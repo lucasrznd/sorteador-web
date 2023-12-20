@@ -53,6 +53,9 @@ public class NovoSorteioController implements Serializable {
     private ResultadoSorteioService resultadoSorteioService;
 
     @Autowired
+    private UsuarioProgramaService usuarioProgramaService;
+
+    @Autowired
     private LoginService loginService;
 
     private String tipoImportacao;
@@ -145,16 +148,9 @@ public class NovoSorteioController implements Serializable {
         resultadoSorteioService.salvar(resultadoSorteio);
 
         sorteio.setResultado(resultadoSorteio);
-        this.mensagemGanhador = StringUtil.mensagemGanhador(sorteio);
-    }
 
-    public List<Usuario> buscarUsuario(String nome) {
-        usuarioList = usuarioService.buscaPorNomeUsuario(nome);
-
-        if (usuarioList == null) {
-            Messages.addFlashGlobalWarn(MSG_NENHUM_REGISTRO.getMsg());
-        }
-        return usuarioList;
+        UsuarioPrograma usuarioPrograma = usuarioProgramaService.buscaPorPrograma(sorteio.getPrograma());
+        this.mensagemGanhador = StringUtil.mensagemGanhador(sorteio, usuarioPrograma);
     }
 
     public List<Brinde> buscarBrinde(String descricao) {
