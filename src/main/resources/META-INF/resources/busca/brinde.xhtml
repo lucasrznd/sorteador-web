@@ -105,15 +105,18 @@
                     </p:column>
 
                     <p:column headerText="Tipo de Brinde" style="text-align: center;">
-                        #{brinde.tipoBrinde.tipo}
+                        <p:outputLabel value="#{brinde.tipoBrinde.tipo}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Descrição" style="text-align: center;">
-                        #{brinde.descricao}
+                        <p:outputLabel value="#{brinde.descricao}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Empresa Associada" style="text-align: center;">
-                        #{brinde.empresaAssociada.nome}
+                        <p:outputLabel value="#{brinde.empresaAssociada.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Editar/Excluir" style="text-align: center;">

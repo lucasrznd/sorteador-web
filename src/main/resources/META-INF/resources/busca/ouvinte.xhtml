@@ -109,27 +109,33 @@
                     </p:column>
 
                     <p:column headerText="Nome" style="text-align: center;">
-                        #{ouvinte.pessoa.nome}
+                        <p:outputLabel value="#{ouvinte.pessoa.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Telefone" style="text-align: center;">
-                        #{ouvinte.pessoa.telefone}
+                        <p:outputLabel value="#{ouvinte.pessoa.telefone}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Rua" style="text-align: center;">
-                        #{ouvinte.pessoa.endereco.rua}
+                        <p:outputLabel value="#{ouvinte.pessoa.endereco.rua}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Bairro" style="text-align: center;">
-                        #{ouvinte.pessoa.endereco.bairro}
+                        <p:outputLabel value="#{ouvinte.pessoa.endereco.bairro}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Número" style="text-align: center;">
-                        #{ouvinte.pessoa.endereco.numero}
+                        <p:outputLabel value="#{ouvinte.pessoa.endereco.numero}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Cidade" style="text-align: center;">
-                        #{ouvinte.pessoa.endereco.cidade}
+                        <p:outputLabel value="#{ouvinte.pessoa.endereco.cidade}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Editar/Excluir" style="text-align: center;">

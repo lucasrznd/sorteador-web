@@ -15,11 +15,16 @@ import java.time.LocalDate;
 @Table(name = "tb_pessoa")
 public class Pessoa extends GenericDomain {
 
+    @Column(name = "nome")
     private String nome;
+
+    @Column(name = "telefone")
+    private String telefone;
+
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
 
     @Embedded
     private Endereco endereco;
-    private String telefone;
-    private LocalDate dataNascimento;
 
 }

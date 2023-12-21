@@ -113,19 +113,23 @@
                     </p:column>
 
                     <p:column headerText="Brinde" style="text-align: center;">
-                        #{sorteio.brinde.descricao}
+                        <p:outputLabel value="#{sorteio.brinde.descricao}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Empresa" style="text-align: center;">
-                        #{sorteio.brinde.empresaAssociada.nome}
+                        <p:outputLabel value="#{sorteio.brinde.empresaAssociada.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Programa" style="text-align: center;">
-                        #{sorteio.programa.nome}
+                        <p:outputLabel value="#{sorteio.programa.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Criado por" style="text-align: center;">
-                        #{sorteio.usuario.pessoa.nome}
+                        <p:outputLabel value="#{sorteio.usuario.pessoa.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Data de Cadastro" style="text-align: center;">

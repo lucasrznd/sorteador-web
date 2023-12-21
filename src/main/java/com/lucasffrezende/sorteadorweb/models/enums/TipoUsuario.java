@@ -8,7 +8,9 @@ public enum TipoUsuario {
     ADMIN("Administrador"),
     TECNICO("Técnico"),
     LOCUTOR("Locutor"),
-    COLABORADOR("Colaborador");
+    COLABORADOR("Colaborador"),
+    CONVIDADO("Convidado"),
+    FINANCEIRO("Financeiro");
 
     @Getter @Setter
     private String descricao;

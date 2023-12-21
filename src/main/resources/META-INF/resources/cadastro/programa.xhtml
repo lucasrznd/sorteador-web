@@ -21,7 +21,7 @@
     </h:head>
 
     <h:body>
-        <h:form id="formPrincipal">
+        <h:form id="formPrincipal" rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}">
             <!--Incluir menu-->
             <ui:include src="/rsc/templates/menu.xhtml"/>
 

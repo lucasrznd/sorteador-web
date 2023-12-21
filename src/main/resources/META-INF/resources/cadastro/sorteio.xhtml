@@ -110,7 +110,8 @@
                                             value="#{novoSorteioController.sorteio.brinde}"
                                             completeMethod="#{novoSorteioController.buscarBrinde}"
                                             var="brinde"
-                                            itemLabel="#{brinde.descricao}" itemValue="#{brinde}"
+                                            itemLabel="#{not empty brinde ? brinde.descricao : ''}#{not empty brinde and not empty brinde.empresaAssociada.nome ? ' - ' : ''}#{not empty brinde.empresaAssociada.nome ? brinde.empresaAssociada.nome : ''}"
+                                            itemValue="#{brinde}"
                                             converter="#{brindeConverter}" forceSelection="true"
                                             required="true"
                                             requiredMessage="Brinde é obrigatório."
@@ -211,19 +212,23 @@
                         </p:column>
 
                         <p:column headerText="Brinde" style="text-align: center;">
-                            #{sorteio.brinde.descricao}
+                            <p:outputLabel value="#{sorteio.brinde.descricao}"
+                                           style="text-transform: uppercase"/>
                         </p:column>
 
                         <p:column headerText="Empresa" style="text-align: center;">
-                            #{sorteio.brinde.empresaAssociada.nome}
+                            <p:outputLabel value="#{sorteio.brinde.empresaAssociada.nome}"
+                                           style="text-transform: uppercase"/>
                         </p:column>
 
                         <p:column headerText="Programa" style="text-align: center;">
-                            #{sorteio.programa.nome}
+                            <p:outputLabel value="#{sorteio.programa.nome}"
+                                           style="text-transform: uppercase"/>
                         </p:column>
 
                         <p:column headerText="Criado por" style="text-align: center;">
-                            #{sorteio.usuario.pessoa.nome}
+                            <p:outputLabel value="#{sorteio.usuario.pessoa.nome}"
+                                           style="text-transform: uppercase"/>
                         </p:column>
 
                         <p:column headerText="Data/Hora" style="text-align: center;">
@@ -307,6 +312,16 @@
                             <p:column>
                                 <p:outputLabel id="brindeGanhador"
                                                value="#{novoSorteioController.brindeDoGanhador()}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="empresaAssociada" value="Empresa:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="empresaAssociada"
+                                               value="#{novoSorteioController.sorteio.brinde.empresaAssociada.nome}"/>
                             </p:column>
                         </p:row>
 

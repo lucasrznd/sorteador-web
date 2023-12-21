@@ -66,7 +66,7 @@
                         </p:column>
                         <p:column>
                             <p:inputMask id="telefone" value="#{buscaEmpresaController.empresaAssociada.telefone}"
-                                         mask="(99) 9999-9999"
+                                         mask="(99) 9 9999-9999"
                                          maxlength="100"
                                          styleClass="input-text-responsive"/>
                         </p:column>
@@ -96,7 +96,7 @@
                     </p:column>
 
                     <p:column headerText="Nome" style="text-align: center;">
-                        #{empresa.nome}
+                        <p:outputLabel value="#{empresa.nome}" style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Telefone" style="text-align: center;">
@@ -104,19 +104,19 @@
                     </p:column>
 
                     <p:column headerText="Rua" style="text-align: center;">
-                        #{empresa.endereco.rua}
+                        <p:outputLabel value="#{empresa.endereco.rua}" style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Bairro" style="text-align: center;">
-                        #{empresa.endereco.bairro}
+                        <p:outputLabel value="#{empresa.endereco.bairro}" style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Número" style="text-align: center;">
-                        #{empresa.endereco.numero}
+                        <p:outputLabel value="#{empresa.endereco.numero}" style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Cidade" style="text-align: center;">
-                        #{empresa.endereco.cidade}
+                        <p:outputLabel value="#{empresa.endereco.cidade}" style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Editar/Excluir" style="text-align: center;">
@@ -191,7 +191,7 @@
                         </p:column>
                         <p:column>
                             <p:inputMask id="telefoneModal" value="#{buscaEmpresaController.empresaAssociada.telefone}"
-                                         mask="(99) 9999-9999"
+                                         mask="(99) 9 9999-9999"
                                          maxlength="100"
                                          styleClass="input-text-responsive"/>
                         </p:column>

@@ -122,23 +122,27 @@
 
                     <p:column headerText="Ganhador" style="text-align: center;">
                         <p:outputLabel value="#{resultadoSorteio.ouvinte.pessoa.nome}"
-                                       style="font-weight: bold"/>
+                                       style="font-weight: bold; text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Brinde" style="text-align: center;">
-                        #{resultadoSorteio.sorteio.brinde.descricao}
+                        <p:outputLabel value="#{resultadoSorteio.sorteio.brinde.descricao}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Empresa" style="text-align: center;">
-                        #{resultadoSorteio.sorteio.brinde.empresaAssociada.nome}
+                        <p:outputLabel value="#{resultadoSorteio.sorteio.brinde.empresaAssociada.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Programa" style="text-align: center;">
-                        #{resultadoSorteio.sorteio.programa.nome}
+                        <p:outputLabel value="#{resultadoSorteio.sorteio.programa.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Usuário Realizador" style="text-align: center;">
-                        #{resultadoSorteio.sorteio.usuario.pessoa.nome}
+                        <p:outputLabel value="#{resultadoSorteio.sorteio.usuario.pessoa.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Data/Hora" style="text-align: center;">

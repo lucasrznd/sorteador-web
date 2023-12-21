@@ -16,9 +16,6 @@ import java.time.LocalDateTime;
 @Table(name = "tb_resultado_sorteio")
 public class ResultadoSorteio extends GenericDomain {
 
-    @Column(name = "data_hora")
-    private LocalDateTime dataHora;
-
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "sorteio_codigo")
     private Sorteio sorteio;
@@ -26,5 +23,8 @@ public class ResultadoSorteio extends GenericDomain {
     @ManyToOne
     @JoinColumn(name = "ouvinte_codigo")
     private Ouvinte ouvinte;
+
+    @Column(name = "data_hora")
+    private LocalDateTime dataHora;
 
 }

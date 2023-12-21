@@ -43,7 +43,8 @@ public class EmpresaAssociadaRepository {
         }
 
         if (empresaAssociada.getEndereco().getCidade() != null && !empresaAssociada.getEndereco().getCidade().isBlank()) {
-            predicates.add(criteriaBuilder.equal(root.get("endereco").get("cidade"), empresaAssociada.getEndereco().getCidade()));
+            predicates.add(criteriaBuilder.like(root.get("endereco").get("cidade"),
+                    "%" + empresaAssociada.getEndereco().getCidade() + "%"));
         }
 
         criteriaQuery.where(predicates.toArray(new Predicate[0]));

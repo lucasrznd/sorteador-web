@@ -77,7 +77,8 @@
                     </p:column>
 
                     <p:column headerText="Nome" style="text-align: center;">
-                        #{usuario.pessoa.nome}
+                        <p:outputLabel value="#{usuario.pessoa.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Telefone" style="text-align: center;">
@@ -85,11 +86,13 @@
                     </p:column>
 
                     <p:column headerText="Rua" style="text-align: center;">
-                        #{usuario.pessoa.endereco.rua}
+                        <p:outputLabel value="#{usuario.pessoa.endereco.rua}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Bairro" style="text-align: center;">
-                        #{usuario.pessoa.endereco.bairro}
+                        <p:outputLabel value="#{usuario.pessoa.endereco.bairro}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Número" style="text-align: center;">
@@ -97,7 +100,7 @@
                     </p:column>
 
                     <p:column headerText="Cidade" style="text-align: center;">
-                        #{usuario.pessoa.endereco.cidade}
+                        <p:outputLabel value="#{usuario.pessoa.endereco.cidade}" style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Editar/Excluir" style="text-align: center;">

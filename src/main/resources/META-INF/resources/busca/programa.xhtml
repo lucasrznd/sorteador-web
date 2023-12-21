@@ -89,11 +89,13 @@
                     </p:column>
 
                     <p:column headerText="Nome" style="text-align: center;">
-                        #{usuarioPrograma.programa.nome}
+                        <p:outputLabel value="#{usuarioPrograma.programa.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Locutor" style="text-align: center;">
-                        #{usuarioPrograma.usuario.pessoa.nome}
+                        <p:outputLabel value="#{usuarioPrograma.usuario.pessoa.nome}"
+                                       style="text-transform: uppercase"/>
                     </p:column>
 
                     <p:column headerText="Editar/Excluir" style="text-align: center;">
