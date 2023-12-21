@@ -76,7 +76,7 @@ public class BuscaResultadoSorteioController implements Serializable {
 
     public String gerarMensagemGanhador(ResultadoSorteio resultadoSorteio) {
         UsuarioPrograma usuarioPrograma = usuarioProgramaService.buscaPorPrograma(resultadoSorteio.getSorteio().getPrograma());
-        this.mensagemGanhador = StringUtil.mensagemGanhador(resultadoSorteio.getSorteio(), usuarioPrograma);
+        this.mensagemGanhador = StringUtil.mensagemGanhador(resultadoSorteio, usuarioPrograma);
         return mensagemGanhador;
     }
 

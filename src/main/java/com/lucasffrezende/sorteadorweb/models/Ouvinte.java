@@ -13,6 +13,7 @@ import java.util.Set;
 public class Ouvinte extends GenericDomain {
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pessoa_codigo")
     private Pessoa pessoa;
 
     @ManyToMany(mappedBy = "ouvinteSet")

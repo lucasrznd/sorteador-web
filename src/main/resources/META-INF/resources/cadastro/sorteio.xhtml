@@ -316,7 +316,7 @@
                             </p:column>
                             <p:column>
                                 <p:outputLabel id="nomeGanhador"
-                                               value="#{novoSorteioController.sorteio.resultado.ouvinte.pessoa.nome}"
+                                               value="#{novoSorteioController.resultadoSorteio.ouvinte.pessoa.nome}"
                                                style="font-weight: bold"/>
                             </p:column>
                         </p:row>
@@ -327,7 +327,7 @@
                             </p:column>
                             <p:column>
                                 <p:outputLabel id="telefoneGanhador"
-                                               value="#{novoSorteioController.sorteio.resultado.ouvinte.pessoa.telefone}"/>
+                                               value="#{novoSorteioController.resultadoSorteio.ouvinte.pessoa.telefone}"/>
                             </p:column>
                         </p:row>
 
@@ -337,7 +337,7 @@
                             </p:column>
                             <p:column>
                                 <p:outputLabel id="dataHoraGanhador"
-                                               value="#{novoSorteioController.sorteio.resultado.dataHora}">
+                                               value="#{novoSorteioController.resultadoSorteio.dataHora}">
                                     <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
                                 </p:outputLabel>
                             </p:column>
@@ -358,7 +358,7 @@
                         <p:row style="text-align: center;">
                             <p:column>
                                 <p:button value="Enviar no Whatsapp" icon="pi pi-whatsapp"
-                                          onclick="redirectToWhatsApp('#{novoSorteioController.sorteio.resultado.ouvinte.pessoa.telefone}', '#{novoSorteioController.mensagemGanhador}');"
+                                          onclick="redirectToWhatsApp('#{novoSorteioController.resultadoSorteio.ouvinte.pessoa.telefone}', '#{novoSorteioController.mensagemGanhador}');"
                                           styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
                             </p:column>
                         </p:row>

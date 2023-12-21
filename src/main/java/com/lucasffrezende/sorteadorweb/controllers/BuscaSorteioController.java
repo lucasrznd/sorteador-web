@@ -1,6 +1,9 @@
 package com.lucasffrezende.sorteadorweb.controllers;
 
-import com.lucasffrezende.sorteadorweb.models.*;
+import com.lucasffrezende.sorteadorweb.models.Brinde;
+import com.lucasffrezende.sorteadorweb.models.Programa;
+import com.lucasffrezende.sorteadorweb.models.Sorteio;
+import com.lucasffrezende.sorteadorweb.models.Usuario;
 import com.lucasffrezende.sorteadorweb.services.BrindeService;
 import com.lucasffrezende.sorteadorweb.services.ProgramaService;
 import com.lucasffrezende.sorteadorweb.services.SorteioService;
@@ -50,7 +53,6 @@ public class BuscaSorteioController implements Serializable {
         sorteio.setBrinde(new Brinde());
         sorteio.setUsuario(new Usuario());
         sorteio.setOuvinteSet(new HashSet<>());
-        sorteio.setResultado(new ResultadoSorteio());
 
         programaList = programaService.listar();
     }

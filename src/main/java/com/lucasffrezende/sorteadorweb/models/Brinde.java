@@ -1,8 +1,6 @@
 package com.lucasffrezende.sorteadorweb.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +11,14 @@ import lombok.Setter;
 public class Brinde extends GenericDomain {
 
     @ManyToOne
+    @JoinColumn(name = "tipo_brinde_codigo")
     private TipoBrinde tipoBrinde;
+
+    @Column(name = "descricao")
     private String descricao;
 
     @ManyToOne
+    @JoinColumn(name = "empresa_associada_codigo")
     private EmpresaAssociada empresaAssociada;
 
 }

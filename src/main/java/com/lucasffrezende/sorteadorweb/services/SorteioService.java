@@ -36,9 +36,7 @@ public class SorteioService {
     }
 
     public void salvar(Sorteio sorteio) {
-        if (sorteio.getResultado().getOuvinte() == null) {
-            sorteio.setAtivo(true);
-        }
+        sorteio.setAtivo(true);
 
         sorteioRepository.salvar(sorteio);
     }

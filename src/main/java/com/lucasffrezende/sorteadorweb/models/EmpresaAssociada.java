@@ -10,10 +10,13 @@ import lombok.Setter;
 @Table(name = "tb_empresa_associada")
 public class EmpresaAssociada extends GenericDomain {
 
+    @Column(name = "nome")
     private String nome;
 
     @Embedded
     private Endereco endereco;
+
+    @Column(name = "telefone")
     private String telefone;
 
 }

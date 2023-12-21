@@ -15,14 +15,18 @@ import java.util.Set;
 public class Sorteio extends GenericDomain {
 
     @ManyToOne
+    @JoinColumn(name = "programa_codigo")
     private Programa programa;
 
+    @Column(name = "data_hora")
     private LocalDateTime dataHora;
 
     @ManyToOne
+    @JoinColumn(name = "brinde_codigo")
     private Brinde brinde;
 
     @ManyToOne
+    @JoinColumn(name = "usuario_codigo")
     private Usuario usuario;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -30,9 +34,7 @@ public class Sorteio extends GenericDomain {
             inverseJoinColumns = {@JoinColumn(name = "ouvinte_codigo")})
     private Set<Ouvinte> ouvinteSet = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private ResultadoSorteio resultado;
-
+    @Column(name = "ativo")
     private Boolean ativo;
 
 }

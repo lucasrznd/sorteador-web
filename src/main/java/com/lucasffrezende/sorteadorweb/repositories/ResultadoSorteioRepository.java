@@ -78,10 +78,15 @@ public class ResultadoSorteioRepository {
     }
 
     public ResultadoSorteio buscaPorSorteio(Sorteio sorteio) {
-        Query query = em.createQuery("SELECT rs FROM ResultadoSorteio rs WHERE rs.sorteio = :sorteio");
-        query.setParameter("sorteio", sorteio);
-        ResultadoSorteio resultadoSorteio = (ResultadoSorteio) query.getSingleResult();
-        return resultadoSorteio;
+        try {
+            Query query = em.createQuery("SELECT rs FROM ResultadoSorteio rs WHERE rs.sorteio = :sorteio");
+            query.setParameter("sorteio", sorteio);
+            ResultadoSorteio resultadoSorteio = (ResultadoSorteio) query.getSingleResult();
+            return resultadoSorteio;
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return null;
+        }
     }
 
     @Transactional

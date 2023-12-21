@@ -27,7 +27,6 @@ public class NovoSorteioController implements Serializable {
     private SorteioService sorteioService;
 
     private Sorteio sorteio;
-    private Sorteio sorteioSelecionado;
     private List<Sorteio> sorteioList;
 
     @Autowired
@@ -51,6 +50,7 @@ public class NovoSorteioController implements Serializable {
 
     @Autowired
     private ResultadoSorteioService resultadoSorteioService;
+    private ResultadoSorteio resultadoSorteio;
 
     @Autowired
     private UsuarioProgramaService usuarioProgramaService;
@@ -68,8 +68,11 @@ public class NovoSorteioController implements Serializable {
         sorteio.setBrinde(new Brinde());
         sorteio.setUsuario(new Usuario());
         sorteio.setOuvinteSet(new HashSet<>());
-        sorteio.setResultado(new ResultadoSorteio());
         sorteio.getBrinde().setTipoBrinde(new TipoBrinde());
+
+        resultadoSorteio = new ResultadoSorteio();
+        resultadoSorteio.setSorteio(sorteio);
+        resultadoSorteio.setOuvinte(new Ouvinte());
 
         sorteioList = new ArrayList<>();
         programaList = programaService.listar();
@@ -89,9 +92,22 @@ public class NovoSorteioController implements Serializable {
 
         sorteio.setDataHora(LocalDateTime.now());
         sorteio.setOuvinteSet(ouvinteSet);
-        sorteio.getResultado().setSorteio(sorteio);
         sorteio.setUsuario(usuarioLogado);
         sorteioService.salvar(sorteio);
+
+        // Salva a associacao na tabela resultado sorteio
+        resultadoSorteio.setSorteio(sorteio);
+        resultadoSorteio.setOuvinte(null);
+
+        // Verifica se o resultadoSorteio para o sorteio informado ja existe
+        ResultadoSorteio resultadoSorteioSalvo = resultadoSorteioService.buscaPorSorteio(sorteio);
+        if (resultadoSorteioSalvo != null) {
+            resultadoSorteioSalvo.setSorteio(sorteio);
+            resultadoSorteioSalvo.setOuvinte(null);
+            resultadoSorteioService.salvar(resultadoSorteioSalvo);
+        } else {
+            resultadoSorteioService.salvar(resultadoSorteio);
+        }
 
         Messages.addGlobalInfo(MSG_SALVO_SUCESSO.getMsg());
     }
@@ -130,7 +146,6 @@ public class NovoSorteioController implements Serializable {
             sorteio.setBrinde(new Brinde());
             sorteio.setUsuario(new Usuario());
             sorteio.setOuvinteSet(new HashSet<>());
-            sorteio.setResultado(new ResultadoSorteio());
             sorteio.getBrinde().setTipoBrinde(new TipoBrinde());
         }
         GrowlView.showInfo("Sucesso", MSG_IMPORT_SUCESSO.getMsg());
@@ -140,17 +155,15 @@ public class NovoSorteioController implements Serializable {
         // Realiza o sorteio
         Ouvinte ouvinte = sorteioService.sortear(ouvintesModel.getTarget());
 
-        ResultadoSorteio resultadoSorteio = resultadoSorteioService.buscaPorSorteio(this.sorteio);
+        resultadoSorteio = resultadoSorteioService.buscaPorSorteio(this.sorteio);
         resultadoSorteio.setDataHora(LocalDateTime.now());
         resultadoSorteio.setOuvinte(ouvinte);
         resultadoSorteio.getSorteio().setAtivo(false);
 
         resultadoSorteioService.salvar(resultadoSorteio);
 
-        sorteio.setResultado(resultadoSorteio);
-
         UsuarioPrograma usuarioPrograma = usuarioProgramaService.buscaPorPrograma(sorteio.getPrograma());
-        this.mensagemGanhador = StringUtil.mensagemGanhador(sorteio, usuarioPrograma);
+        this.mensagemGanhador = StringUtil.mensagemGanhador(resultadoSorteio, usuarioPrograma);
     }
 
     public List<Brinde> buscarBrinde(String descricao) {

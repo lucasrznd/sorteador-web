@@ -1,9 +1,6 @@
 package com.lucasffrezende.sorteadorweb.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,9 +11,11 @@ import lombok.Setter;
 public class UsuarioPrograma extends GenericDomain {
 
     @ManyToOne
+    @JoinColumn(name = "usuario_codigo")
     private Usuario usuario;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "programa_codigo")
     private Programa programa;
 
 }

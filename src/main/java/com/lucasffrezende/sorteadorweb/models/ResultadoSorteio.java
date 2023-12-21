@@ -1,9 +1,6 @@
 package com.lucasffrezende.sorteadorweb.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +16,15 @@ import java.time.LocalDateTime;
 @Table(name = "tb_resultado_sorteio")
 public class ResultadoSorteio extends GenericDomain {
 
+    @Column(name = "data_hora")
     private LocalDateTime dataHora;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "sorteio_codigo")
     private Sorteio sorteio;
 
     @ManyToOne
+    @JoinColumn(name = "ouvinte_codigo")
     private Ouvinte ouvinte;
 
 }

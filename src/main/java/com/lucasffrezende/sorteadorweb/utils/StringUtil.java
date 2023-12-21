@@ -1,5 +1,6 @@
 package com.lucasffrezende.sorteadorweb.utils;
 
+import com.lucasffrezende.sorteadorweb.models.ResultadoSorteio;
 import com.lucasffrezende.sorteadorweb.models.Sorteio;
 import com.lucasffrezende.sorteadorweb.models.UsuarioPrograma;
 
@@ -10,13 +11,13 @@ public class StringUtil {
 
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public static String mensagemGanhador(Sorteio sorteio, UsuarioPrograma usuarioPrograma) {
-        String nomeGanhador = sorteio.getResultado().getOuvinte().getPessoa().getNome();
-        String descricaoBrinde = sorteio.getBrinde().getDescricao();
-        String nomeEmpresa = sorteio.getBrinde().getEmpresaAssociada().getNome();
-        String nomePrograma = sorteio.getPrograma().getNome();
+    public static String mensagemGanhador(ResultadoSorteio resultadoSorteio, UsuarioPrograma usuarioPrograma) {
+        String nomeGanhador = resultadoSorteio.getOuvinte().getPessoa().getNome();
+        String descricaoBrinde = resultadoSorteio.getSorteio().getBrinde().getDescricao();
+        String nomeEmpresa = resultadoSorteio.getSorteio().getBrinde().getEmpresaAssociada().getNome();
+        String nomePrograma = resultadoSorteio.getSorteio().getPrograma().getNome();
         String nomeLocutor = usuarioPrograma.getUsuario().getPessoa().getNome();
-        LocalDateTime dataHoraSorteio = sorteio.getResultado().getDataHora();
+        LocalDateTime dataHoraSorteio = resultadoSorteio.getDataHora();
 
         return String.format("Parabéns %s, você foi o(a) ganhador(a) do Brinde %s da Empresa %s" +
                         " no programa %s do Locutor %s, na data %s.",
