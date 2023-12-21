@@ -94,7 +94,8 @@
                                             value="#{buscaSorteioController.sorteio.brinde}"
                                             completeMethod="#{buscaSorteioController.buscarBrinde}"
                                             var="brinde"
-                                            itemLabel="#{brinde.descricao}" itemValue="#{brinde}"
+                                            itemLabel="#{not empty brinde ? brinde.descricao : ''}#{not empty brinde and not empty brinde.empresaAssociada.nome ? ' - ' : ''}#{not empty brinde.empresaAssociada.nome ? brinde.empresaAssociada.nome : ''}"
+                                            itemValue="#{brinde}"
                                             converter="#{brindeConverter}" forceSelection="true"
                                             style="text-transform: uppercase;"/>
                         </p:column>

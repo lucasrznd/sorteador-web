@@ -138,7 +138,8 @@
                                        style="text-transform: uppercase"/>
                     </p:column>
 
-                    <p:column headerText="Editar/Excluir" style="text-align: center;">
+                    <p:column headerText="Editar/Excluir" style="text-align: center;"
+                              rendered="#{loginController.temPermissao(['Administrador', 'Técnico', 'Locutor', 'Financeiro'])}">
                         <!-- Inicio código para botão Editar -->
                         <p:commandButton icon="pi pi-pencil"
                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"

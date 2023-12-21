@@ -70,11 +70,11 @@
 
                     <p:row style="text-align: center">
                         <p:column>
-                            <p:outputLabel for="dataCadastro" value="Data de Cadastro:"/>
+                            <p:outputLabel for="dataHora" value="Data/Hora:"/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="dataCadastro" locale="pt" pattern="dd/MM/yyyy" readonlyInput="true"
-                                        value="#{buscaSorteioController.sorteio.dataHora}"
+                            <p:calendar id="dataHora" locale="pt" pattern="dd/MM/yyyy" readonlyInput="true"
+                                        value="#{buscaResultadoSorteioController.resultadoSorteio.dataHora}"
                                         showOn="button"
                                         navigator="true"
                                         styleClass="ui-calendar"/>

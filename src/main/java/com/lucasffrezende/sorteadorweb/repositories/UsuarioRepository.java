@@ -45,7 +45,8 @@ public class UsuarioRepository {
 
     public List<Usuario> buscaPorNomeLocutor(String nome) {
         try {
-            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.pessoa.nome LIKE :nome AND u.tipoUsuario = 'LOCUTOR'");
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.pessoa.nome LIKE :nome AND u.tipoUsuario = 'LOCUTOR' " +
+                    "OR tipoUsuario = 'COLABORADOR'");
             query.setParameter("nome", "%" + nome + "%");
 
             List<Usuario> usuarioList = query.getResultList();

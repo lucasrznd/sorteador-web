@@ -11,6 +11,7 @@ import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,8 @@ public class ResultadoSorteioRepository {
         }
 
         if (resultadoSorteio.getDataHora() != null) {
-            predicates.add(criteriaBuilder.equal(root.get("dataHora"), resultadoSorteio.getDataHora()));
+            Expression<LocalDate> dateFunction = criteriaBuilder.function("DATE", LocalDate.class, root.get("dataHora"));
+            predicates.add(criteriaBuilder.equal(dateFunction, resultadoSorteio.getDataHora()));
         }
 
         if (resultadoSorteio.getOuvinte() != null) {
