@@ -25,8 +25,14 @@ public class OuvinteService {
         return ouvinteRepository.buscaPorCodigo(codigo);
     }
 
-    public void salvar(Ouvinte ouvinte) {
-        ouvinteRepository.salvar(ouvinte);
+    public boolean salvar(Ouvinte ouvinte) {
+        Ouvinte ouvinteExistente = ouvinteRepository.buscaPorNomeETelefone(ouvinte.getPessoa().getNome(), ouvinte.getPessoa().getTelefone());
+        if (ouvinteExistente == null) {
+            ouvinteRepository.salvar(ouvinte);
+            return true;
+        }
+
+        return false;
     }
 
     public void delete(Ouvinte ouvinte) {

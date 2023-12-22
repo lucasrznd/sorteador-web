@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.MSG_REGISTRO_EXISTENTE;
 import static com.lucasffrezende.sorteadorweb.enums.MensagemEnum.MSG_SALVO_SUCESSO;
 
 @Component
@@ -31,8 +32,13 @@ public class NovaEmpresaController implements Serializable {
     }
 
     public void salvar() {
-        empresaAssociadaService.salvar(empresaAssociada);
+        Boolean jaExiste = empresaAssociadaService.salvar(empresaAssociada);
 
-        Messages.addGlobalInfo(MSG_SALVO_SUCESSO.getMsg());
+        if (jaExiste) {
+            Messages.addGlobalInfo(MSG_SALVO_SUCESSO.getMsg());
+            return;
+        }
+
+        Messages.addFlashGlobalError(MSG_REGISTRO_EXISTENTE.getMsg());
     }
 }

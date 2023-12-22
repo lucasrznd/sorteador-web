@@ -29,8 +29,14 @@ public class EmpresaAssociadaService {
         return empresaAssociadaRepository.buscaPorCodigo(codigo);
     }
 
-    public void salvar(EmpresaAssociada empresaAssociada) {
-        empresaAssociadaRepository.salvar(empresaAssociada);
+    public boolean salvar(EmpresaAssociada empresaAssociada) {
+        EmpresaAssociada empresaExistente = empresaAssociadaRepository.buscaPorNomeUnico(empresaAssociada.getNome());
+        if (empresaExistente == null) {
+            empresaAssociadaRepository.salvar(empresaAssociada);
+            return true;
+        }
+
+        return false;
     }
 
     public void delete(EmpresaAssociada empresaAssociada) {

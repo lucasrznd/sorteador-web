@@ -2,6 +2,7 @@ package com.lucasffrezende.sorteadorweb.repositories;
 
 import com.lucasffrezende.sorteadorweb.models.EmpresaAssociada;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -58,6 +59,18 @@ public class EmpresaAssociadaRepository {
 
         List<EmpresaAssociada> empresaAssociadaList = query.getResultList();
         return empresaAssociadaList;
+    }
+
+    public EmpresaAssociada buscaPorNomeUnico(String nome) {
+        try {
+            Query query = em.createQuery("SELECT e FROM EmpresaAssociada e WHERE e.nome = :nome");
+            query.setParameter("nome", nome);
+
+            EmpresaAssociada empresaAssociada = (EmpresaAssociada) query.getSingleResult();
+            return empresaAssociada;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public EmpresaAssociada buscaPorCodigo(Long codigo) {

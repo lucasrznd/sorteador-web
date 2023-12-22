@@ -3,6 +3,7 @@ package com.lucasffrezende.sorteadorweb.repositories;
 import com.lucasffrezende.sorteadorweb.models.Ouvinte;
 import com.lucasffrezende.sorteadorweb.models.Pessoa;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.*;
@@ -22,6 +23,18 @@ public class OuvinteRepository {
         Query query = em.createQuery("SELECT o FROM Ouvinte o ORDER BY o.pessoa.nome");
         List<Ouvinte> ouvinteList = query.getResultList();
         return ouvinteList;
+    }
+
+    public Ouvinte buscaPorNomeETelefone(String nome, String telefone) {
+        try {
+            Query query = em.createQuery("SELECT o FROM Ouvinte o WHERE o.pessoa.nome = :nome AND o.pessoa.telefone = :telefone");
+            query.setParameter("nome", nome);
+            query.setParameter("telefone", telefone);
+            Ouvinte ouvinte = (Ouvinte) query.getSingleResult();
+            return ouvinte;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public List<Ouvinte> buscaDinamica(Ouvinte ouvinte) {
