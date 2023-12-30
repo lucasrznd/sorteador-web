@@ -44,7 +44,7 @@ public class BuscaEmpresaController implements Serializable {
     }
 
     public void editar() {
-        empresaAssociadaService.salvar(empresaAssociada);
+        empresaAssociadaService.editar(empresaAssociada);
 
         GrowlView.showInfo("Sucesso", MSG_SALVO_SUCESSO.getMsg());
     }

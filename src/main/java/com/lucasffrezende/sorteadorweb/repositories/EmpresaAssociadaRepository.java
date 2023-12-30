@@ -84,6 +84,11 @@ public class EmpresaAssociadaRepository {
     }
 
     @Transactional
+    public void editar(EmpresaAssociada empresaAssociada) {
+        em.merge(empresaAssociada);
+    }
+
+    @Transactional
     public void delete(EmpresaAssociada empresaAssociada) {
         em.remove(em.contains(empresaAssociada) ? empresaAssociada : em.merge(empresaAssociada));
     }

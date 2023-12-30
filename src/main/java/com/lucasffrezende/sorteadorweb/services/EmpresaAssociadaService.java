@@ -39,6 +39,10 @@ public class EmpresaAssociadaService {
         return false;
     }
 
+    public void editar(EmpresaAssociada empresaAssociada) {
+        empresaAssociadaRepository.editar(empresaAssociada);
+    }
+
     public void delete(EmpresaAssociada empresaAssociada) {
         empresaAssociadaRepository.delete(empresaAssociada);
     }

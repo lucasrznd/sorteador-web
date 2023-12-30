@@ -46,7 +46,7 @@ public class BuscaOuvinteController implements Serializable {
     }
 
     public void editar() {
-        ouvinteService.salvar(ouvinte);
+        ouvinteService.editar(ouvinte);
 
         GrowlView.showInfo("Sucesso", MSG_SALVO_SUCESSO.getMsg());
     }

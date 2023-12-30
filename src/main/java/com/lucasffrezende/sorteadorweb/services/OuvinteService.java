@@ -35,6 +35,10 @@ public class OuvinteService {
         return false;
     }
 
+    public void editar(Ouvinte ouvinte) {
+        ouvinteRepository.editar(ouvinte);
+    }
+
     public void delete(Ouvinte ouvinte) {
         ouvinteRepository.delete(ouvinte);
     }
