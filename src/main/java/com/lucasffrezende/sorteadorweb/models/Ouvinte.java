@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -18,5 +19,8 @@ public class Ouvinte extends GenericDomain {
 
     @ManyToMany(mappedBy = "ouvinteSet")
     private Set<Sorteio> sorteioSet;
+
+    @OneToMany(mappedBy = "ouvinte")
+    private List<ResultadoSorteio> resultadoSorteio;
 
 }

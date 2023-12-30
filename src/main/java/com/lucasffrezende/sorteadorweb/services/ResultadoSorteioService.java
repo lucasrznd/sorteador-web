@@ -26,6 +26,10 @@ public class ResultadoSorteioService {
         return resultadoSorteioRepository.buscaPorSorteio(sorteio);
     }
 
+    public List<ResultadoSorteio> ganhadoresDeHoje() {
+        return resultadoSorteioRepository.ganhadoresDeHoje();
+    }
+
     public void salvar(ResultadoSorteio resultadoSorteio) {
         resultadoSorteioRepository.salvar(resultadoSorteio);
     }

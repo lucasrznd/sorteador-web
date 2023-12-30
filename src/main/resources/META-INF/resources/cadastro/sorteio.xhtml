@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
@@ -146,10 +145,11 @@
         </h:form>
 
         <!-- Inicio do Modal de Importar -->
-        <p:dialog modal="true"
+        <p:dialog id="modalImport" modal="true"
                   header="Importar Dados" height="80%" width="90%" widgetVar="modal"
                   maximizable="true"
                   draggable="false"
+                  showOnOpen="PF('modal').maximize()"
                   responsive="true"
                   position="center">
             <h:form id="formModal">
@@ -270,7 +270,6 @@
                   modal="true" closable="false"
                   appendTo="@(body)" dynamic="true"
                   resizable="false"
-                  maximizable="true"
                   draggable="false"
                   responsive="true"
                   position="center">
@@ -291,22 +290,23 @@
                 </p:panelGrid>
             </p:panel>
         </p:dialog>
-        <!-- Fim do modal de sorteio -->
+        <!-- Fim do modal de sorteio  -->
 
         <!-- Inicio Modal de ganhador -->
         <p:dialog id="modalGanhador" widgetVar="modalGanhador" height="80%" width="70%"
-                  modal="true" header="Ganhador do Sorteio" closable="true"
+                  modal="true" header="Ganhador do Sorteio"
                   appendTo="@(body)" dynamic="true"
                   onHide="PF('modalDois').hide()"
                   resizable="false"
+                  closable="false"
                   draggable="false"
                   responsive="true"
                   position="center">
             <h:form>
                 <p:panel>
-                    <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                    <p:panelGrid id="panelGridGanhador" style="width: 100%" layout="tabular" columns="0">
                         <p:row style="text-align: center">
-                            <p:column>
+                            <p:column styleClass="column-large-screen">
                                 <p:outputLabel for="brindeGanhador" value="Brinde:"/>
                             </p:column>
                             <p:column>
@@ -317,11 +317,11 @@
 
                         <p:row style="text-align: center">
                             <p:column>
-                                <p:outputLabel for="empresaAssociada" value="Empresa:"/>
+                                <p:outputLabel for="programaModalGanhador" value="Programa:"/>
                             </p:column>
                             <p:column>
-                                <p:outputLabel id="empresaAssociada"
-                                               value="#{novoSorteioController.sorteio.brinde.empresaAssociada.nome}"/>
+                                <p:outputLabel id="programaModalGanhador"
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.sorteio.programa.nome}"/>
                             </p:column>
                         </p:row>
 
@@ -331,7 +331,7 @@
                             </p:column>
                             <p:column>
                                 <p:outputLabel id="nomeGanhador"
-                                               value="#{novoSorteioController.resultadoSorteio.ouvinte.pessoa.nome}"
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.ouvinte.pessoa.nome}"
                                                style="font-weight: bold"/>
                             </p:column>
                         </p:row>
@@ -342,7 +342,7 @@
                             </p:column>
                             <p:column>
                                 <p:outputLabel id="telefoneGanhador"
-                                               value="#{novoSorteioController.resultadoSorteio.ouvinte.pessoa.telefone}"/>
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.ouvinte.pessoa.telefone}"/>
                             </p:column>
                         </p:row>
 
@@ -352,7 +352,7 @@
                             </p:column>
                             <p:column>
                                 <p:outputLabel id="dataHoraGanhador"
-                                               value="#{novoSorteioController.resultadoSorteio.dataHora}">
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.dataHora}">
                                     <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
                                 </p:outputLabel>
                             </p:column>
@@ -364,7 +364,7 @@
                             </p:column>
                             <p:column>
                                 <p:outputLabel id="usuarioRealizador"
-                                               value="#{novoSorteioController.sorteio.usuario.pessoa.nome}"/>
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.sorteio.usuario.pessoa.nome}"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
@@ -373,8 +373,25 @@
                         <p:row style="text-align: center;">
                             <p:column>
                                 <p:button value="Enviar no Whatsapp" icon="pi pi-whatsapp"
-                                          onclick="redirectToWhatsApp('#{novoSorteioController.resultadoSorteio.ouvinte.pessoa.telefone}', '#{novoSorteioController.mensagemGanhador}');"
+                                          onclick="redirectToWhatsApp('#{novoSorteioController.resultadoSorteioTemporario.ouvinte.pessoa.telefone}', '#{novoSorteioController.mensagemGanhador}');"
                                           styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
+
+                                <i class="pi pi-ellipsis-v mr-2"/>
+
+                                <p:commandButton value="Imprimir" type="button" icon="pi pi-print"
+                                                 styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                                 style="margin-left: 6px">
+                                    <p:printer target="panelGridGanhador"
+                                               configuration="globalStyles: true, title: 'Educadora FM 90.9 de Jacarezinho', timeout: 1000"/>
+                                </p:commandButton>
+
+                                <i class="pi pi-ellipsis-v mr-2"/>
+
+                                <p:commandButton value="Sair" icon="pi pi-times"
+                                                 styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                                 oncomplete="location.reload();"
+                                                 update="formPrincipal"
+                                                 style="margin-left: 6px"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>

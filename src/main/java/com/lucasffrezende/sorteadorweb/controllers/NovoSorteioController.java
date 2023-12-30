@@ -51,6 +51,7 @@ public class NovoSorteioController implements Serializable {
     @Autowired
     private ResultadoSorteioService resultadoSorteioService;
     private ResultadoSorteio resultadoSorteio;
+    private ResultadoSorteio resultadoSorteioTemporario;
 
     @Autowired
     private UsuarioProgramaService usuarioProgramaService;
@@ -71,7 +72,7 @@ public class NovoSorteioController implements Serializable {
         sorteio.getBrinde().setTipoBrinde(new TipoBrinde());
 
         resultadoSorteio = new ResultadoSorteio();
-        resultadoSorteio.setSorteio(sorteio);
+        resultadoSorteio.setSorteio(new Sorteio());
         resultadoSorteio.setOuvinte(new Ouvinte());
 
         sorteioList = new ArrayList<>();
@@ -152,6 +153,17 @@ public class NovoSorteioController implements Serializable {
     }
 
     public void sortear() {
+        resultadoSorteioTemporario = new ResultadoSorteio();
+
+        // Se um ouvinte ja ganhou um sorteio no determinado dia, sera removido da lista
+        List<ResultadoSorteio> ganhadoresDeHoje = resultadoSorteioService.ganhadoresDeHoje();
+        List<Ouvinte> ganhadoresList = new ArrayList<>();
+        for (ResultadoSorteio ganhador : ganhadoresDeHoje) {
+            ganhadoresList.add(ganhador.getOuvinte());
+        }
+
+        ouvintesModel.getTarget().removeAll(ganhadoresList);
+
         // Realiza o sorteio
         Ouvinte ouvinte = sorteioService.sortear(ouvintesModel.getTarget());
 
@@ -161,9 +173,12 @@ public class NovoSorteioController implements Serializable {
         resultadoSorteio.getSorteio().setAtivo(false);
 
         resultadoSorteioService.salvar(resultadoSorteio);
+        resultadoSorteioTemporario = resultadoSorteio;
 
         UsuarioPrograma usuarioPrograma = usuarioProgramaService.buscaPorPrograma(sorteio.getPrograma());
         this.mensagemGanhador = StringUtil.mensagemGanhador(resultadoSorteio, usuarioPrograma);
+
+        init();
     }
 
     public List<Brinde> buscarBrinde(String descricao) {
@@ -176,7 +191,7 @@ public class NovoSorteioController implements Serializable {
     }
 
     public String brindeDoGanhador() {
-        return sorteio.getBrinde().getTipoBrinde().getTipo() + " | " + sorteio.getBrinde().getDescricao();
+        return resultadoSorteioTemporario.getSorteio().getBrinde().getDescricao() + " | " + resultadoSorteioTemporario.getSorteio().getBrinde().getEmpresaAssociada().getNome();
     }
 
 }

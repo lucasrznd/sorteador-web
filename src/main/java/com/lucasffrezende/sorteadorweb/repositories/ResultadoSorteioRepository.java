@@ -3,10 +3,7 @@ package com.lucasffrezende.sorteadorweb.repositories;
 import com.lucasffrezende.sorteadorweb.models.Ouvinte;
 import com.lucasffrezende.sorteadorweb.models.ResultadoSorteio;
 import com.lucasffrezende.sorteadorweb.models.Sorteio;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,6 +84,17 @@ public class ResultadoSorteioRepository {
             return resultadoSorteio;
         } catch (Exception e) {
             //e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<ResultadoSorteio> ganhadoresDeHoje() {
+        try {
+            Query query = em.createQuery("SELECT rs FROM ResultadoSorteio rs WHERE EXTRACT(DAY FROM rs.dataHora) = EXTRACT(DAY FROM CURRENT_DATE)");
+            List<ResultadoSorteio> resultadoSorteioList = query.getResultList();
+            return resultadoSorteioList;
+        } catch (NoResultException e) {
+            e.printStackTrace();
             return null;
         }
     }
