@@ -1,9 +1,10 @@
 package com.lucasffrezende.sorteadorweb.repositories;
 
 import com.lucasffrezende.sorteadorweb.models.Usuario;
-import com.lucasffrezende.sorteadorweb.models.enums.TipoUsuario;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
