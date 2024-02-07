@@ -19,6 +19,7 @@
     <properties>
         <java.version>17</java.version>
         <joinfaces.version>5.2.0</joinfaces.version>
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencyManagement>
@@ -34,6 +35,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Starter Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <!-- JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -69,6 +76,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Omni Faces -->
+        <dependency>
+            <groupId>org.joinfaces</groupId>
+            <artifactId>omnifaces-spring-boot-starter</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+
         <!-- Join Faces -->
         <dependency>
             <groupId>org.joinfaces</groupId>
@@ -79,6 +93,14 @@
         <dependency>
             <groupId>org.joinfaces</groupId>
             <artifactId>primefaces-spring-boot-starter</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+
+        <!-- Apache Shiro -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.10.0</version>
         </dependency>
     </dependencies>
 

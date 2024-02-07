@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+
+    <h:head>
+        <title>SorteadorEducadora - Buscar Programa</title>
+
+        <!-- FavIcon e Import CSS -->
+        <link rel="shortcut icon" type="image/x-icon"
+              href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
+        <h:outputStylesheet name="/rsc/css/estilo.css"/>
+
+        <!-- Escala em dispositivos moveis -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    </h:head>
+
+    <h:body>
+        <h:form id="formPrincipal">
+            <!--Incluir menu-->
+            <ui:include src="/rsc/templates/menu.xhtml"/>
+
+            <p:panel>
+                <h2>Buscar Programa</h2>
+                <p:messages id="messages" closable="true"/>
+            </p:panel>
+
+            <p:panel>
+                <h:panelGrid style="width: 100%" columns="5">
+                    <p:row>
+                        <p:button value="Novo" icon="pi pi-plus-circle"
+                                  outcome="/cadastro/programa.xhtml"
+                                  styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
+
+                        <i class="pi pi-ellipsis-v mr-2"/>
+
+                        <p:commandButton value="Buscar" icon="pi pi-search"
+                                         actionListener="#{buscaProgramaController.buscar()}"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="messages gridPrincipal dataTable"
+                                         style="margin-left: 6px"/>
+                    </p:row>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel>
+                <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column styleClass="column-large-screen">
+                            <p:outputLabel for="nome" value="Nome:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="nome" value="#{buscaProgramaController.usuarioPrograma.programa.nome}"
+                                         maxlength="150"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="locutor" value="Locutor:"/>
+                        </p:column>
+                        <p:column>
+                            <p:autoComplete id="locutor"
+                                            value="#{buscaProgramaController.usuarioPrograma.usuario}"
+                                            completeMethod="#{buscaProgramaController.buscarLocutor}"
+                                            var="locutor"
+                                            itemLabel="#{locutor.pessoa.nome}" itemValue="#{locutor}"
+                                            converter="#{usuarioConverter}" forceSelection="true"
+                                            style="text-transform: uppercase;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+
+            <p:panel>
+                <p:dataTable id="dataTable" value="#{buscaProgramaController.usuarioProgramaList}"
+                             var="usuarioPrograma" showGridlines="true"
+                             paginator="true" rows="5"
+                             reflow="true">
+
+                    <p:column headerText="Código" style="text-align: center;">
+                        #{usuarioPrograma.codigo}
+                    </p:column>
+
+                    <p:column headerText="Nome" style="text-align: center;">
+                        <p:outputLabel value="#{usuarioPrograma.programa.nome}"
+                                       style="text-transform: uppercase"/>
+                    </p:column>
+
+                    <p:column headerText="Locutor" style="text-align: center;">
+                        <p:outputLabel value="#{usuarioPrograma.usuario.pessoa.nome}"
+                                       style="text-transform: uppercase"/>
+                    </p:column>
+
+                    <p:column headerText="Editar/Excluir" style="text-align: center;">
+                        <!-- Inicio código para botão Editar -->
+                        <p:commandButton icon="pi pi-pencil"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         oncomplete="PF('modal').show()"
+                                         update="formModal"
+                                         process="@this">
+                            <f:setPropertyActionListener value="#{usuarioPrograma}"
+                                                         target="#{buscaProgramaController.usuarioPrograma}"/>
+                        </p:commandButton>
+                        <!-- Fim código para botão Editar -->
+
+                        <p:graphicImage library="imgs" name="ellipsis-v-icon.png"
+                                        style="margin-left: 5px;width: 3.5px;"
+                                        rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"/>
+
+                        <!-- Inicio código para botão delete -->
+                        <p:commandButton action="#{buscaProgramaController.delete()}"
+                                         update="dataTable :formModal:growlMessage"
+                                         icon="pi pi-trash"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         style="margin-left: 5px"
+                                         rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}">
+                            <p:confirm header="Confirmação" message="Deseja remover este registro?"
+                                       icon="pi pi-info-circle"/>
+                            <f:setPropertyActionListener
+                                    target="#{buscaProgramaController.usuarioPrograma}"
+                                    value="#{usuarioPrograma}"/>
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true"
+                                         width="350">
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                             process="@this"/>
+                        </p:confirmDialog>
+                        <!-- Fim código para botão delete -->
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+        <!-- Inicio do Modal -->
+        <p:dialog modal="true"
+                  header="Editar Dados" height="80%" width="80%" widgetVar="modal"
+                  maximizable="true"
+                  draggable="false"
+                  responsive="true"
+                  position="center">
+            <h:form id="formModal">
+
+                <p:growl id="growlMessage" showDetail="true"/>
+                <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column styleClass="column-large-screen">
+                            <p:outputLabel for="nomeModal" value="Nome:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="nomeModal" value="#{buscaProgramaController.usuarioPrograma.programa.nome}"
+                                         required="true"
+                                         requiredMessage="Nome é obrigatório."
+                                         maxlength="150"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="locutorModal" value="Locutor:"/>
+                        </p:column>
+                        <p:column>
+                            <p:autoComplete id="locutorModal"
+                                            value="#{buscaProgramaController.usuarioPrograma.usuario}"
+                                            completeMethod="#{buscaProgramaController.buscarLocutor}"
+                                            var="locutor"
+                                            itemLabel="#{locutor.pessoa.nome}" itemValue="#{locutor}"
+                                            converter="#{usuarioConverter}" forceSelection="true"
+                                            style="text-transform: uppercase;"
+                                            requiredMessage="Locutor é obrigatório."/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="ativoModal" value="Ativo:"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox id="ativoModal" styleClass="custom-checkbox"
+                                                     value="#{buscaProgramaController.usuarioPrograma.programa.ativo}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <div style="display: flex; justify-content: center">
+                    <p:panelGrid>
+                        <p:commandButton value="Salvar" icon="pi pi-save"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         action="#{buscaProgramaController.editar()}"
+                                         process="@form" update="@form :formPrincipal:dataTable growlMessage"/>
+                    </p:panelGrid>
+                </div>
+            </h:form>
+        </p:dialog>
+        <!-- Fim do Modal -->
+
+        <!-- Incluir rodapé -->
+        <ui:include src="/rsc/templates/rodape.xhtml"/>
+    </h:body>
+</f:view>
+</html>

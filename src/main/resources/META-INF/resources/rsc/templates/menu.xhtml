@@ -1,0 +1,48 @@
+<html lang="pt-BR"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:body>
+    <p:menubar style="width: 100%">
+        <p:menuitem outcome="/inicio/home.xhtml">
+            <p:graphicImage library="imgs" name="logo.png" style="width: 157px; height: 59px"/>
+        </p:menuitem>
+
+        <p:submenu label="Cadastro" icon="pi pi-plus-circle">
+            <p:menuitem value="Ouvinte"        outcome="/cadastro/ouvinte.xhtml"
+                        icon="pi pi-user"/>
+
+            <p:menuitem value="Brinde"         outcome="/cadastro/brinde.xhtml"
+                        icon="pi pi-gift"
+                        rendered="#{loginController.temPermissao(['Administrador', 'Técnico', 'Locutor', 'Financeiro'])}"/>
+
+            <p:menuitem value="Empresa"        outcome="/cadastro/empresa.xhtml"
+                        icon="pi pi-building"
+                        rendered="#{loginController.temPermissao(['Administrador', 'Técnico', 'Locutor', 'Financeiro'])}"/>
+
+            <p:menuitem value="Programa"       outcome="/cadastro/programa.xhtml"
+                        rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"
+                        icon="pi pi-microphone"/>
+
+            <p:menuitem value="Usuário"        outcome="/cadastro/usuario.xhtml"
+            rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"
+                        icon="pi pi-user-plus"/>
+        </p:submenu>
+
+        <p:submenu label="Sorteio" icon="pi pi-gift">
+            <p:menuitem value="Novo"           outcome="/cadastro/sorteio.xhtml"
+                        icon="pi pi-plus" />
+            <p:menuitem value="Resultados"     outcome="/busca/resultado.xhtml"
+                        icon="pi pi-chart-bar"/>
+        </p:submenu>
+
+        <p:menuitem value="Sair" action="#{loginController.logout()}"
+                    icon="pi pi-fw pi-power-off"/>
+    </p:menubar>
+</h:body>
+
+</html>

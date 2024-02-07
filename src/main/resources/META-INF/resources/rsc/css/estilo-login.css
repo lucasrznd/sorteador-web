@@ -1,0 +1,22 @@
+body {
+    background-image: url("#{resource['/imgs/background-login.png']}");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Isso garante que a imagem de fundo ocupe toda a altura da tela */
+    margin: 0; /* Remove margens padrão do corpo */
+}
+
+/* MODAL LOGIN - Estilo padrão para todos os tamanhos de tela */
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow {
+    width: 35% !important; /* Largura padrão para dispositivos não móveis */
+}
+
+/* MODAL LOGIN - Estilo específico para dispositivos móveis com largura máxima de 767 pixels */
+@media only screen and (max-width: 767px) {
+    .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow {
+        width: 100% !important; /* Largura total para dispositivos móveis */
+    }
+}
+
+

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+
+    <h:head>
+        <title>SorteadorEducadora - Novo Sorteio</title>
+
+        <!-- FavIcon e Import CSS -->
+        <link rel="shortcut icon" type="image/x-icon"
+              href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
+        <h:outputStylesheet name="/rsc/css/estilo.css"/>
+        <h:outputScript name="rsc/js/sorteio.js"/>
+
+        <!-- Escala em dispositivos moveis -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    </h:head>
+
+    <h:body>
+        <h:form id="formPrincipal">
+            <!--Incluir menu-->
+            <ui:include src="/rsc/templates/menu.xhtml"/>
+
+            <p:panel>
+                <h2>Novo Sorteio</h2>
+                <p:messages id="messages" closable="true"/>
+            </p:panel>
+
+            <p:panel>
+                <h:panelGrid id="panelGridButton" style="width: 100%" columns="5">
+                    <p:row>
+                        <p:commandButton value="Novo" icon="pi pi-plus-circle"
+                                         actionListener="#{novoSorteioController.init()}"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="messages gridPrincipal gridSecundario ouvintePick
+                                         :formModal:dataTable
+                                         panelGridButton"/>
+
+                        <i class="pi pi-ellipsis-v mr-2"/>
+
+                        <p:commandButton value="Salvar" icon="pi pi-check-circle"
+                                         actionListener="#{novoSorteioController.salvar()}"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="messages gridPrincipal gridSecundario ouvintePick panelGridButton"
+                                         style="margin-left: 6px"/>
+
+                        <p:graphicImage library="imgs" name="ellipsis-v-icon.png"
+                                        style="margin-left: 10px;width: 3.5px;"
+                                        rendered="#{novoSorteioController.sorteio.codigo == null}"/>
+
+                        <p:commandButton value="Importar" icon="pi pi-upload"
+                                         oncomplete="PF('modal').show()"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="gridSecundario ouvintePick panelGridButton"
+                                         rendered="#{novoSorteioController.sorteio.codigo == null}"
+                                         style="margin-left: 10px"/>
+
+                        <p:graphicImage library="imgs" name="ellipsis-v-icon.png"
+                                        style="margin-left: 10px;width: 3.5px;"
+                                        rendered="#{novoSorteioController.sorteio.codigo != null}"/>
+
+                        <p:commandButton value="Sortear" icon="pi pi-gift"
+                                         actionListener="#{novoSorteioController.sortear()}"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="messages gridPrincipal gridSecundario ouvintePick"
+                                         rendered="#{novoSorteioController.sorteio.codigo != null}"
+                                         onstart="PF('modalSorteio').show()"
+                                         oncomplete="agendarFechamentoModalSorteio();"
+                                         style="margin-left: 10px"/>
+
+                        <p:button value="Buscar" icon="pi pi-search"
+                                  outcome="/busca/sorteio.xhtml"
+                                  styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                  style="float: right"/>
+                    </p:row>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel>
+                <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column styleClass="column-large-screen">
+                            <p:outputLabel for="programa" value="Programa:"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="programa"
+                                             value="#{novoSorteioController.sorteio.programa}"
+                                             converter="omnifaces.SelectItemsConverter"
+                                             required="true"
+                                             requiredMessage="Programa é obrigatório."
+                                             styleClass="ui-selectonemenu">
+                                <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
+                                <f:selectItems value="#{novoSorteioController.programaList}" var="programa"
+                                               itemValue="#{programa}" itemLabel="#{programa.nome}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="brinde" value="Brinde:"/>
+                        </p:column>
+                        <p:column>
+                            <p:autoComplete id="brinde"
+                                            value="#{novoSorteioController.sorteio.brinde}"
+                                            completeMethod="#{novoSorteioController.buscarBrinde}"
+                                            var="brinde"
+                                            itemLabel="#{not empty brinde ? brinde.descricao : ''}#{not empty brinde and not empty brinde.empresaAssociada.nome ? ' - ' : ''}#{not empty brinde.empresaAssociada.nome ? brinde.empresaAssociada.nome : ''}"
+                                            itemValue="#{brinde}"
+                                            converter="#{brindeConverter}" forceSelection="true"
+                                            required="true"
+                                            requiredMessage="Brinde é obrigatório."
+                                            style="text-transform: uppercase;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <h2>Participantes</h2>
+                <p:panelGrid id="gridSecundario" style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column style="width: 100%">
+                            <p:pickList id="ouvintePick" value="#{novoSorteioController.ouvintesModel}" var="ouvinte"
+                                        itemValue="#{ouvinte}" itemLabel="#{ouvinte.pessoa.nome}"
+                                        showSourceControls="true"
+                                        showTargetControls="true" showCheckbox="true"
+                                        showSourceFilter="true" showTargetFilter="true"
+                                        sourceFilterPlaceholder="Selecione os nomes desejados"
+                                        targetFilterPlaceholder="Participantes atuais"
+                                        filterMatchMode="contains"
+                                        required="true"
+                                        requiredMessage="Selecione os ouvintes."
+                                        converter="#{ouvinteConverter}" responsive="true">
+
+                                <f:facet name="sourceCaption">Todos</f:facet>
+                                <f:facet name="targetCaption">Participando</f:facet>
+                            </p:pickList>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+
+        <!-- Inicio do Modal de Importar -->
+        <p:dialog id="modalImport" modal="true"
+                  header="Importar Dados" height="60vh" width="200vh" widgetVar="modal"
+                  maximizable="true"
+                  draggable="false"
+                  showOnOpen="PF('modal').maximize()"
+                  responsive="true"
+                  position="center">
+            <h:form id="formModal">
+
+                <p:growl id="growlMessage" showDetail="true"/>
+                <p:panel>
+                    <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                        <p:row style="text-align: center">
+                            <p:column styleClass="column-large-screen">
+                                <p:outputLabel value="Importar:"/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneRadio id="line" value="#{novoSorteioController.tipoImportacao}"
+                                                  layout="lineDirection">
+                                    <f:selectItem itemLabel="Sorteio" itemValue="Sorteio"/>
+                                    <f:selectItem itemLabel="Participantes" itemValue="Participantes"/>
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="programaModal" value="Programa:"/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="programaModal"
+                                                 value="#{novoSorteioController.sorteio.programa}"
+                                                 converter="omnifaces.SelectItemsConverter"
+
+                                                 styleClass="ui-selectonemenu">
+                                    <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
+                                    <f:selectItems value="#{novoSorteioController.programaList}" var="programa"
+                                                   itemValue="#{programa}" itemLabel="#{programa.nome}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel>
+                    <p:dataTable id="dataTable" value="#{novoSorteioController.sorteioList}"
+                                 var="sorteio" showGridlines="true"
+                                 paginator="true" rows="5"
+                                 reflow="true">
+
+                        <p:column headerText="Código" style="text-align: center;">
+                            #{sorteio.codigo}
+                        </p:column>
+
+                        <p:column headerText="Brinde" style="text-align: center;">
+                            <p:outputLabel value="#{sorteio.brinde.descricao}"
+                                           style="text-transform: uppercase"/>
+                        </p:column>
+
+                        <p:column headerText="Empresa" style="text-align: center;">
+                            <p:outputLabel value="#{sorteio.brinde.empresaAssociada.nome}"
+                                           style="text-transform: uppercase"/>
+                        </p:column>
+
+                        <p:column headerText="Programa" style="text-align: center;">
+                            <p:outputLabel value="#{sorteio.programa.nome}"
+                                           style="text-transform: uppercase"/>
+                        </p:column>
+
+                        <p:column headerText="Criado por" style="text-align: center;">
+                            <p:outputLabel value="#{sorteio.usuario.pessoa.nome}"
+                                           style="text-transform: uppercase"/>
+                        </p:column>
+
+                        <p:column headerText="Data/Hora" style="text-align: center;">
+                            <h:outputText value="#{sorteio.dataHora}">
+                                <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Importar" style="text-align: center;">
+                            <p:commandButton
+                                    actionListener="#{novoSorteioController.importar(sorteio)}"
+                                    icon="pi pi-upload"
+                                    update=":formModal:dataTable :formPrincipal:gridSecundario
+                                    :formPrincipal:gridPrincipal :formPrincipal:panelGridButton
+                                    :formModal:growlMessage"
+                                    oncomplete="PF('modal').hide();"
+                                    styleClass="ui-button-raised ui-button-secondary ui-button-flat">
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+
+                    <div style="display: flex; justify-content: center">
+                        <p:panelGrid>
+                            <p:commandButton value="Buscar" icon="pi pi-search"
+                                             actionListener="#{novoSorteioController.buscar()}"
+                                             styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                             update=":formModal:growlMessage :formModal:dataTable :formPrincipal:gridPrincipal"
+                                             style="margin-left: 6px"/>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <!-- Fim do Modal de Importar -->
+
+        <!-- Inicio Modal de sorteio -->
+        <p:dialog id="modalSorteio" widgetVar="modalSorteio" height="60vh" width="150vh"
+                  header="Processando"
+                  modal="true" closable="false"
+                  appendTo="@(body)" dynamic="true"
+                  resizable="false"
+                  draggable="false"
+                  responsive="true"
+                  position="center">
+
+            <p:panel>
+                <p:graphicImage library="imgs" name="loading-sorteio.gif"
+                                style="width: 50%; display: block; margin: 0 auto;"/>
+            </p:panel>
+
+            <p:panel>
+                <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel value="Realizando sorteio, aguarde..."
+                                           style="font-weight: bold"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+        </p:dialog>
+        <!-- Fim do modal de sorteio  -->
+
+        <!-- Inicio Modal de ganhador -->
+        <p:dialog id="modalGanhador" widgetVar="modalGanhador" height="80%" width="70%"
+                  modal="true" header="Ganhador do Sorteio"
+                  appendTo="@(body)" dynamic="true"
+                  onHide="PF('modalDois').hide()"
+                  resizable="false"
+                  closable="false"
+                  draggable="false"
+                  responsive="true"
+                  position="center">
+            <h:form>
+                <p:panel>
+                    <p:panelGrid id="panelGridGanhador" style="width: 100%" layout="tabular" columns="0">
+                        <p:row style="text-align: center">
+                            <p:column styleClass="column-large-screen">
+                                <p:outputLabel for="brindeGanhador" value="Brinde:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="brindeGanhador"
+                                               value="#{novoSorteioController.brindeDoGanhador()}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="programaModalGanhador" value="Programa:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="programaModalGanhador"
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.sorteio.programa.nome}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="nomeGanhador" value="Ganhador:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="nomeGanhador"
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.ouvinte.pessoa.nome}"
+                                               style="font-weight: bold"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="telefoneGanhador" value="Telefone:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="telefoneGanhador"
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.ouvinte.pessoa.telefone}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="dataHoraGanhador" value="Data:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="dataHoraGanhador"
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.dataHora}">
+                                    <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="usuarioRealizador" value="Usuário Realizador:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="usuarioRealizador"
+                                               value="#{novoSorteioController.resultadoSorteioTemporario.sorteio.usuario.pessoa.nome}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <p:panelGrid style="width: 100%; margin-top: 10px" layout="tabular" columns="0">
+                        <p:row style="text-align: center;">
+                            <p:column>
+                                <p:button value="Enviar no Whatsapp" icon="pi pi-whatsapp"
+                                          onclick="redirectToWhatsApp('#{novoSorteioController.resultadoSorteioTemporario.ouvinte.pessoa.telefone}', '#{novoSorteioController.mensagemGanhador}');"
+                                          styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
+
+                                <i class="pi pi-ellipsis-v mr-2"/>
+
+                                <p:commandButton value="Imprimir" type="button" icon="pi pi-print"
+                                                 styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                                 style="margin-left: 6px">
+                                    <p:printer target="panelGridGanhador"
+                                               configuration="globalStyles: true, title: 'Educadora FM 90.9 de Jacarezinho', timeout: 1000"/>
+                                </p:commandButton>
+
+                                <i class="pi pi-ellipsis-v mr-2"/>
+
+                                <p:commandButton value="Sair" icon="pi pi-times"
+                                                 styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                                 oncomplete="location.reload();"
+                                                 update="formPrincipal"
+                                                 style="margin-left: 6px"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <!-- Fim Modal de ganhador -->
+
+        <!-- Incluir rodapé -->
+        <ui:include src="/rsc/templates/rodape.xhtml"/>
+    </h:body>
+</f:view>
+</html>

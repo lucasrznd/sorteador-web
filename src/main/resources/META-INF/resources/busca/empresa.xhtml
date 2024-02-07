@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+
+    <h:head>
+        <title>SorteadorEducadora - Buscar Empresa</title>
+
+        <!-- FavIcon e Import CSS -->
+        <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/imgs/favicon-radio.png"/>
+        <h:outputStylesheet name="/rsc/css/estilo.css"/>
+
+        <!-- Escala em dispositivos moveis -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    </h:head>
+
+    <h:body>
+        <h:form id="formPrincipal">
+            <!--Incluir menu-->
+            <ui:include src="/rsc/templates/menu.xhtml"/>
+
+            <p:panel>
+                <h2>Buscar Empresa</h2>
+                <p:messages id="messages" closable="true"/>
+            </p:panel>
+
+            <p:panel>
+                <h:panelGrid style="width: 100%" columns="5">
+                    <p:row>
+                        <p:button value="Novo" icon="pi pi-plus-circle"
+                                  outcome="/cadastro/empresa.xhtml"
+                                  styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
+
+                        <i class="pi pi-ellipsis-v mr-2"/>
+
+                        <p:commandButton value="Buscar" icon="pi pi-search"
+                                         actionListener="#{buscaEmpresaController.buscar()}"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         update="messages gridPrincipal dataTable"
+                                         style="margin-left: 6px"/>
+                    </p:row>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel>
+                <p:panelGrid id="gridPrincipal" style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column styleClass="column-large-screen">
+                            <p:outputLabel for="nome" value="Nome:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="nome" value="#{buscaEmpresaController.empresaAssociada.nome}"
+                                         maxlength="100"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="telefone" value="Telefone:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputMask id="telefone" value="#{buscaEmpresaController.empresaAssociada.telefone}"
+                                         mask="(99) 9 9999-9999"
+                                         maxlength="100"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="cidade" value="Cidade:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="cidade" value="#{buscaEmpresaController.empresaAssociada.endereco.cidade}"
+                                         maxlength="100"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+
+            <p:panel>
+                <p:dataTable id="dataTable" value="#{buscaEmpresaController.empresaAssociadaList}"
+                             var="empresa" showGridlines="true"
+                             paginator="true" rows="5"
+                             reflow="true">
+
+                    <p:column headerText="Código" style="text-align: center;">
+                        #{empresa.codigo}
+                    </p:column>
+
+                    <p:column headerText="Nome" style="text-align: center;">
+                        <p:outputLabel value="#{empresa.nome}" style="text-transform: uppercase"/>
+                    </p:column>
+
+                    <p:column headerText="Telefone" style="text-align: center;">
+                        #{empresa.telefone}
+                    </p:column>
+
+                    <p:column headerText="Rua" style="text-align: center;">
+                        <p:outputLabel value="#{empresa.endereco.rua}" style="text-transform: uppercase"/>
+                    </p:column>
+
+                    <p:column headerText="Bairro" style="text-align: center;">
+                        <p:outputLabel value="#{empresa.endereco.bairro}" style="text-transform: uppercase"/>
+                    </p:column>
+
+                    <p:column headerText="Número" style="text-align: center;">
+                        <p:outputLabel value="#{empresa.endereco.numero}" style="text-transform: uppercase"/>
+                    </p:column>
+
+                    <p:column headerText="Cidade" style="text-align: center;">
+                        <p:outputLabel value="#{empresa.endereco.cidade}" style="text-transform: uppercase"/>
+                    </p:column>
+
+                    <p:column headerText="Editar/Excluir" style="text-align: center;">
+                        <!-- Inicio código para botão Editar -->
+                        <p:commandButton icon="pi pi-pencil"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         oncomplete="PF('modal').show()"
+                                         update="formModal"
+                                         process="@this">
+                            <f:setPropertyActionListener value="#{empresa}"
+                                                         target="#{buscaEmpresaController.empresaAssociada}"/>
+                        </p:commandButton>
+                        <!-- Fim código para botão Editar -->
+
+                        <p:graphicImage library="imgs" name="ellipsis-v-icon.png"
+                                        style="margin-left: 5px;width: 3.5px;"
+                                        rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}"/>
+
+                        <!-- Inicio código para botão delete -->
+                        <p:commandButton action="#{buscaEmpresaController.delete()}"
+                                         update="dataTable :formModal:growlMessage"
+                                         icon="pi pi-trash"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         style="margin-left: 5px"
+                                         rendered="#{loginController.temPermissao(['Administrador', 'Técnico'])}">
+                            <p:confirm header="Confirmação" message="Deseja remover este registro?"
+                                       icon="pi pi-info-circle"/>
+                            <f:setPropertyActionListener
+                                    target="#{buscaEmpresaController.empresaAssociada}"
+                                    value="#{empresa}"/>
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true"
+                                         width="350">
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                             process="@this"/>
+                        </p:confirmDialog>
+                        <!-- Fim código para botão delete -->
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+        <!-- Inicio do Modal -->
+        <p:dialog modal="true"
+                  header="Editar Dados" height="80%" width="95%" widgetVar="modal"
+                  maximizable="true"
+                  draggable="false"
+                  responsive="true"
+                  position="center">
+            <h:form id="formModal">
+
+                <p:growl id="growlMessage" showDetail="true"/>
+                <p:panelGrid style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column styleClass="column-large-screen">
+                            <p:outputLabel for="nomeModal" value="Nome:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="nomeModal" value="#{buscaEmpresaController.empresaAssociada.nome}"
+                                         required="true"
+                                         requiredMessage="Nome é obrigatório."
+                                         maxlength="100"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="telefoneModal" value="Telefone:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputMask id="telefoneModal" value="#{buscaEmpresaController.empresaAssociada.telefone}"
+                                         mask="(99) 9 9999-9999"
+                                         maxlength="100"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <h2>Endereço</h2>
+                <p:panelGrid id="gridSecundario" style="width: 100%" layout="tabular" columns="0">
+                    <p:row style="text-align: center">
+                        <p:column styleClass="column-large-screen">
+                            <p:outputLabel for="ruaModal" value="Rua:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="ruaModal" value="#{buscaEmpresaController.empresaAssociada.endereco.rua}"
+                                         maxlength="100"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="bairroModal" value="Bairro:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="bairroModal"
+                                         value="#{buscaEmpresaController.empresaAssociada.endereco.bairro}"
+                                         maxlength="50"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="numeroModal" value="Número:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="numeroModal"
+                                         value="#{buscaEmpresaController.empresaAssociada.endereco.numero}"
+                                         converter="jakarta.faces.Integer"
+                                         maxlength="30"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="text-align: center">
+                        <p:column>
+                            <p:outputLabel for="cidadeModal" value="Cidade:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="cidadeModal"
+                                         value="#{buscaEmpresaController.empresaAssociada.endereco.cidade}"
+                                         maxlength="100"
+                                         styleClass="input-text-responsive"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+                <div style="display: flex; justify-content: center">
+                    <p:panelGrid>
+                        <p:commandButton value="Salvar" icon="pi pi-save"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         action="#{buscaEmpresaController.editar()}"
+                                         process="@form" update="@form :formPrincipal:dataTable growlMessage"/>
+                    </p:panelGrid>
+                </div>
+            </h:form>
+        </p:dialog>
+        <!-- Fim do Modal -->
+
+        <!-- Incluir rodapé -->
+        <ui:include src="/rsc/templates/rodape.xhtml"/>
+    </h:body>
+</f:view>
+</html>
