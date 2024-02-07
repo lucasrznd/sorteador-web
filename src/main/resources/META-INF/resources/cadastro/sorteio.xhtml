@@ -146,7 +146,7 @@
 
         <!-- Inicio do Modal de Importar -->
         <p:dialog id="modalImport" modal="true"
-                  header="Importar Dados" height="80%" width="90%" widgetVar="modal"
+                  header="Importar Dados" height="60vh" width="200vh" widgetVar="modal"
                   maximizable="true"
                   draggable="false"
                   showOnOpen="PF('modal').maximize()"
@@ -183,19 +183,6 @@
                                     <f:selectItems value="#{novoSorteioController.programaList}" var="programa"
                                                    itemValue="#{programa}" itemLabel="#{programa.nome}"/>
                                 </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-
-                        <p:row style="text-align: center">
-                            <p:column>
-                                <p:outputLabel for="dataCadastro" value="Data de Cadastro:"/>
-                            </p:column>
-                            <p:column>
-                                <p:calendar id="dataCadastro" locale="pt" pattern="dd/MM/yyyy" readonlyInput="true"
-                                            value="#{novoSorteioController.sorteio.dataHora}"
-                                            showOn="button"
-                                            navigator="true"
-                                            styleClass="ui-calendar"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
@@ -265,7 +252,7 @@
         <!-- Fim do Modal de Importar -->
 
         <!-- Inicio Modal de sorteio -->
-        <p:dialog id="modalSorteio" widgetVar="modalSorteio" height="80%" width="70%"
+        <p:dialog id="modalSorteio" widgetVar="modalSorteio" height="60vh" width="150vh"
                   header="Processando"
                   modal="true" closable="false"
                   appendTo="@(body)" dynamic="true"
