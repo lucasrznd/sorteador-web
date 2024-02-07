@@ -31,6 +31,7 @@ public class BuscaResultadoSorteioController implements Serializable {
     private ResultadoSorteioService resultadoSorteioService;
 
     private ResultadoSorteio resultadoSorteio;
+    private ResultadoSorteio resultadoSorteioTemporario;
     private List<ResultadoSorteio> resultadoSorteioList;
 
     @Autowired
@@ -54,6 +55,12 @@ public class BuscaResultadoSorteioController implements Serializable {
         resultadoSorteio.getSorteio().setPrograma(new Programa());
         resultadoSorteio.setOuvinte(new Ouvinte());
         resultadoSorteio.getOuvinte().setPessoa(new Pessoa());
+
+        resultadoSorteioTemporario = new ResultadoSorteio();
+        resultadoSorteioTemporario.setSorteio(new Sorteio());
+        resultadoSorteioTemporario.getSorteio().setPrograma(new Programa());
+        resultadoSorteioTemporario.setOuvinte(new Ouvinte());
+        resultadoSorteioTemporario.getOuvinte().setPessoa(new Pessoa());
 
         programaList = programaService.listar();
         resultadoSorteioList = new ArrayList<>();
@@ -85,6 +92,10 @@ public class BuscaResultadoSorteioController implements Serializable {
 
         resultadoSorteioList.remove(resultadoSorteio);
         GrowlView.showWarn("Sucesso", MSG_EXCLUIDO_SUCESSO.getMsg());
+    }
+
+    public String brindeDoGanhador() {
+        return resultadoSorteioTemporario.getSorteio().getBrinde().getDescricao() + " | " + resultadoSorteioTemporario.getSorteio().getBrinde().getEmpresaAssociada().getNome();
     }
 
 }

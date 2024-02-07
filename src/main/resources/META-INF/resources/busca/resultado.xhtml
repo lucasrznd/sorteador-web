@@ -70,7 +70,7 @@
 
                     <p:row style="text-align: center">
                         <p:column>
-                            <p:outputLabel for="dataHora" value="Data/Hora:"/>
+                            <p:outputLabel for="dataHora" value="Data:"/>
                         </p:column>
                         <p:column>
                             <p:calendar id="dataHora" locale="pt" pattern="dd/MM/yyyy" readonlyInput="true"
@@ -151,10 +151,21 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Enviar Mensagem" style="text-align: center">
+                    <p:column headerText="Whatsapp/Salvar" style="text-align: center">
                         <p:button icon="pi pi-whatsapp"
                                   onclick="redirectToWhatsApp('#{resultadoSorteio.ouvinte.pessoa.telefone}', '#{buscaResultadoSorteioController.gerarMensagemGanhador(resultadoSorteio)}');"
                                   styleClass="ui-button-raised ui-button-secondary ui-button-flat"/>
+
+                        <i class="pi pi-ellipsis-v mr-2"/>
+
+                        <p:commandButton icon="pi pi-print" oncomplete="PF('modalGanhador').show()"
+                                         update=":formGanhador:panelGridGanhador"
+                                         process="@this"
+                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                         style="margin-left: 5px">
+                            <f:setPropertyActionListener value="#{resultadoSorteio}"
+                                                         target="#{buscaResultadoSorteioController.resultadoSorteioTemporario}"/>
+                        </p:commandButton>
                     </p:column>
 
                     <p:column headerText="Editar/Excluir" style="text-align: center;"
@@ -193,6 +204,106 @@
                 </p:dataTable>
             </p:panel>
         </h:form>
+
+        <!-- Inicio Modal de ganhador -->
+        <p:dialog id="modalGanhador" widgetVar="modalGanhador" height="80%" width="70%"
+                  modal="true" header="Ganhador do Sorteio"
+                  appendTo="@(body)" dynamic="true"
+                  onHide="PF('modalDois').hide()"
+                  resizable="false"
+                  closable="false"
+                  draggable="false"
+                  responsive="true"
+                  position="center">
+            <h:form id="formGanhador">
+                <p:panel>
+                    <p:panelGrid id="panelGridGanhador" style="width: 100%" layout="tabular" columns="0">
+                        <p:row style="text-align: center">
+                            <p:column styleClass="column-large-screen">
+                                <p:outputLabel for="brindeGanhador" value="Brinde:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="brindeGanhador"
+                                               value="#{buscaResultadoSorteioController.brindeDoGanhador()}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="programaModalGanhador" value="Programa:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="programaModalGanhador"
+                                               value="#{buscaResultadoSorteioController.resultadoSorteioTemporario.sorteio.programa.nome}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="nomeGanhador" value="Ganhador:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="nomeGanhador"
+                                               value="#{buscaResultadoSorteioController.resultadoSorteioTemporario.ouvinte.pessoa.nome}"
+                                               style="font-weight: bold"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="telefoneGanhador" value="Telefone:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="telefoneGanhador"
+                                               value="#{buscaResultadoSorteioController.resultadoSorteioTemporario.ouvinte.pessoa.telefone}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="dataHoraGanhador" value="Data:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="dataHoraGanhador"
+                                               value="#{buscaResultadoSorteioController.resultadoSorteioTemporario.dataHora}">
+                                    <f:convertDateTime locale="pt" pattern="dd/MM/yyyy HH:mm:ss" type="localDateTime"/>
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
+
+                        <p:row style="text-align: center">
+                            <p:column>
+                                <p:outputLabel for="usuarioRealizador" value="Usuário Realizador:"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="usuarioRealizador"
+                                               value="#{buscaResultadoSorteioController.resultadoSorteioTemporario.sorteio.usuario.pessoa.nome}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <p:panelGrid style="width: 100%; margin-top: 10px" layout="tabular" columns="0">
+                        <p:row style="text-align: center;">
+                            <p:column>
+                                <p:commandButton value="Imprimir" type="button" icon="pi pi-print"
+                                                 styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                                 style="margin-left: 6px">
+                                    <p:printer target="panelGridGanhador"
+                                               configuration="globalStyles: true, title: 'Educadora FM 90.9 de Jacarezinho', timeout: 1000"/>
+                                </p:commandButton>
+
+                                <i class="pi pi-ellipsis-v mr-2"/>
+
+                                <p:commandButton value="Sair" icon="pi pi-times" onclick="PF('modalGanhador').hide()"
+                                                 styleClass="ui-button-raised ui-button-secondary ui-button-flat"
+                                                 style="margin-left: 6px"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <!-- Fim Modal de ganhador -->
 
         <!-- Incluir rodapé -->
         <ui:include src="/rsc/templates/rodape.xhtml"/>
